@@ -29,7 +29,6 @@ router.get('/', function (req, res) {
 
 router.route('/comments')
   .get(function (req, res) {
-    console.log('hello')
     Comment.find(function (err, comments) {
       if (err)
         res.send(err);
@@ -37,9 +36,10 @@ router.route('/comments')
     });
   })
   .post(function(req, res) {
-    var comment = new Comment();
-    comment.author = req.body.author;
-    comment.text = req.body.text;
+    const author = req.body.author;
+    const text = req.body.text;
+
+    const comment = new Comment({author: author, text: text });
 
     comment.save(function(err) {
       if (err) 
