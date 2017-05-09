@@ -12,7 +12,7 @@ class Comment extends Component {
     return (
       <div style={ style.comment }>
         <h3>{this.props.author}</h3>
-        <span dangerouslySetInnerHTML={ this.rawMarkup } />
+        <span dangerouslySetInnerHTML={ this.rawMarkup() } />
       </div>
     )
   }
