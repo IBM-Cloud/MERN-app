@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/rfdickerson/mern-example.svg?branch=master)](https://travis-ci.org/rfdickerson/mern-example)
 
+![](https://cloud.githubusercontent.com/assets/1310293/26016982/f111312a-372c-11e7-9005-a1b82e11fc78.png)
+
 ## Getting Started
 
   - `yarn`
