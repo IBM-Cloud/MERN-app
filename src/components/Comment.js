@@ -15,12 +15,12 @@ class Comment extends Component {
       <article className="media">
         <figure className="media-left">
           <p className="image is-64x64">
-            <img alt="avatar" src={this.props.imageURL} />
+            <img alt="Image" src={this.props.imageURL} />
           </p>
         </figure>
         <div className="media-content">
           <div className="content">
-            <strong>{this.props.author}</strong> <small>@{this.props.twitter}</small>
+            <strong>{this.props.author}</strong> <small>@{this.props.twitter}</small> <small>31m</small>
             <br />
             <span dangerouslySetInnerHTML={this.rawMarkup()} />
           </div>
