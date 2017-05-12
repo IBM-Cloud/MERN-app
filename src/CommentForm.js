@@ -38,6 +38,8 @@ class CommentForm extends Component {
 
   render() {
     return (
+      <section class="section">
+      <div className="container">
       <form onSubmit={this.handleSubmit}>
         <div className="field">
           <label className="label">Name</label>
@@ -72,6 +74,8 @@ class CommentForm extends Component {
           </p>
         </div>
       </form>
+      </div>
+      </section>
     )
   }
 }

@@ -12,15 +12,16 @@ class Comment extends Component {
 
   render() {
     return (
+      <div className="box">
       <article className="media">
         <figure className="media-left">
           <p className="image is-64x64">
-            <img alt="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg" />
+            <img alt="avatar" src={this.props.imageURL} />
           </p>
         </figure>
         <div className="media-content">
           <div className="content">
-            <strong>{this.props.author}</strong> <small>@johnsmith</small>
+            <strong>{this.props.author}</strong> <small>@{this.props.twitter}</small>
             <br />
             <span dangerouslySetInnerHTML={this.rawMarkup()} />
           </div>
@@ -42,6 +43,7 @@ class Comment extends Component {
           <button className="delete"></button>
         </div>
       </article>
+      </div>
     )
   }
 }

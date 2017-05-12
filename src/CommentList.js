@@ -10,7 +10,12 @@ class CommentList extends Component {
   render() {
     let commentNodes = this.props.data.map(comment => {
       return (
-        <Comment author={comment.author} key={comment['_id']}>
+        <Comment 
+          author={comment.author} 
+          key={comment['_id']}
+          imageURL={comment['imageURL']}
+          twitter={comment['twitter']}
+        >
           {comment.text}
         </Comment>
       )
