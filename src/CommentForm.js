@@ -1,7 +1,8 @@
 //CommentForm.js
 
 import React, { Component } from 'react';
-import style from './style';
+// import style from './style';
+import 'bulma/css/bulma.css';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -29,31 +30,52 @@ class CommentForm extends Component {
     }
 
     this.props.onCommentSubmit({ author: author, text: text });
-    this.setState({ author: '', text: ''});
-    
+    this.setState({ author: '', text: '' });
+
     console.log(`${this.state.author} said ${this.state.text}`)
     // make a POST request here.
   }
 
   render() {
     return (
-      <form style={ style.commentForm } onSubmit={ this.handleSubmit }>
-        <input 
-        type='text' 
-        placeholder='Your name...' style={ style.commentFormAuthor }
-        value={ this.state.author }
-        onChange={ this.handleAuthorChange } />
-        <input
-        type='text'
-        placeholder='Say something...'
-        style={ style.commentFormText }
-        value={ this.state.text }
-        onChange={ this.handleTextChange } />
-        <input 
-        type='submit'
-        style={ style.commentFormPost }
-        value='Post' />
-        </form>
+      <section class="section">
+      <div className="container">
+      <form onSubmit={this.handleSubmit}>
+        <div className="field">
+          <label className="label">Name</label>
+          <p className="control">
+            <input
+              className="input"
+              type='text'
+              placeholder='Your name...'
+              value={this.state.author}
+              onChange={this.handleAuthorChange} />
+          </p>
+        </div>
+
+        <div className="field">
+          <label className="label">Message</label>
+          <p className="control">
+            <input
+              className="input"
+              type='text'
+              placeholder='Say something...'
+              value={this.state.text}
+              onChange={this.handleTextChange} />
+          </p>
+        </div>
+
+        <div className="field">
+          <p className="control">
+            <input
+              className="button is-primary"
+              type='submit'
+              value='Post' />
+          </p>
+        </div>
+      </form>
+      </div>
+      </section>
     )
   }
 }

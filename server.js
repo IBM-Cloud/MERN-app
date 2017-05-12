@@ -42,7 +42,14 @@ router.route('/comments')
     const author = req.body.author;
     const text = req.body.text;
 
-    const comment = new Comment({author: author, text: text });
+    const comment = new Comment(
+      {
+        author: author, 
+        text: text,
+        twitter: 'coolguy',
+        imageURL: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg' 
+      }
+      );
 
     comment.save(function(err) {
       if (err) 

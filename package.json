@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.1",
+    "bulma": "^0.4.1",
     "express": "^4.15.2",
     "foreman": "^2.0.0",
     "marked": "^0.3.6",
