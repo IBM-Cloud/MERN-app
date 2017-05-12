@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
-// import DATA from '../data';
-import style from './style';
+
+import 'bulma/css/bulma.css';
 
 class CommentBox extends Component {
   constructor(props) {
@@ -42,11 +42,16 @@ class CommentBox extends Component {
 
   render() {
     return (
-      <div style={ style.commentBox }>
-        <h2>Comments:</h2>
+      <section className="section">
+        <div className="container">
+          <div className="heading">
+            <h1 className="title">Comments</h1>
+            <h2 className="subtitle">List of comments are here</h2>
+          </div>
         <CommentList data={ this.state.data }/>
         <CommentForm onCommentSubmit={ this.handleCommentSubmit }/>
-      </div>
+        </div>
+      </section>
     )
   }
 }
