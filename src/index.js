@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CommentBox from './CommentBox';
-import Hero from './Hero';
-import Footer from './Footer';
+import CommentBox from './components/CommentBox';
+import Hero from './components/Hero';
+import Footer from './components/Footer';
 
 ReactDOM.render(
   <div>

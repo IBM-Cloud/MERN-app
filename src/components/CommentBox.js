@@ -44,7 +44,9 @@ class CommentBox extends Component {
     return (
       <section className="section">
         <div className="container">
+
         <CommentList data={ this.state.data }/>
+        <hr/>
         <CommentForm onCommentSubmit={ this.handleCommentSubmit }/>
         </div>
       </section>
