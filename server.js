@@ -4,6 +4,10 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+
+var RedisStore = require('connect-redis')(session);
+
 var Comment = require('./model/comments');
 
 var app = express();
@@ -16,6 +20,19 @@ mongoose.connect('mongodb://localhost/comments');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+const options = {
+  host: 'localhost',
+  port: 6379
+}
+
+app.use(session({
+  store: new RedisStore(options),
+  name: 'mern example',
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}))
 
 if (process.env.NODE_ENV == 'production') {
   console.log('Using production mode');
