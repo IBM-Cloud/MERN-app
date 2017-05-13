@@ -38,6 +38,16 @@ class CommentBox extends Component {
   }
 
   handleCommentDelete(id) {
+
+    let comments = this.state.data;
+
+    // comments.splice(0, 1);
+    let newComments = comments.filter( (t) => {
+      return t._id !== id 
+    });
+
+    this.setState({ data: newComments });
+
     axios.delete(`${this.props.url}/${id}`)
       .then(res => {
         console.log('Comment deleted');

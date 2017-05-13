@@ -9,17 +9,13 @@ class CommentForm extends Component {
     super(props);
     this.state = { 
       author: 'Anton Dochtermann', 
+      twitter: 'mathgeek',
       text: '',
       imageURL: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg' 
     };
 
-    this.handleAuthorChange = this.handleAuthorChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleAuthorChange(e) {
-    this.setState({ author: e.target.value });
   }
 
   handleTextChange(e) {
@@ -31,14 +27,20 @@ class CommentForm extends Component {
     let author = this.state.author.trim();
     let text = this.state.text.trim();
     if (!text || !author) {
+      console.log(`Missing info, author: ${author} and text: ${text}`);
       return;
     }
 
-    this.props.onCommentSubmit({ author: author, text: text, imageURL: this.state.imageURL });
-    this.setState({ author: '', text: '' });
+    this.props.onCommentSubmit(
+      { 
+        author: author, 
+        text: text, 
+        imageURL: this.state.imageURL,
+        twitter: this.state.twitter
+     });
 
-    console.log(`${this.state.author} said ${this.state.text}`)
-    // make a POST request here.
+    this.setState({ text: '' });
+
   }
 
   render() {

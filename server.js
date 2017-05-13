@@ -41,13 +41,15 @@ router.route('/comments')
   .post(function(req, res) {
     const author = req.body.author;
     const text = req.body.text;
+    const twitter = req.body.twitter;
+    const imageURL = req.body.imageURL;
 
     const comment = new Comment(
       {
         author: author, 
         text: text,
-        twitter: 'coolguy',
-        imageURL: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg' 
+        twitter: twitter,
+        imageURL: imageURL
       }
       );
 
