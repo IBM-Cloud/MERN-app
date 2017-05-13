@@ -16,10 +16,17 @@ class CommentForm extends Component {
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleTextChange(e) {
     this.setState({ text: e.target.value });
+  }
+
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.handleSubmit(e);
+    }
   }
 
   handleSubmit(e) {
@@ -49,7 +56,7 @@ class CommentForm extends Component {
 
         <figure className="media-left">
           <p className="image is-64x64">
-            <img alt="Avatar" src="http://bulma.io/images/placeholders/128x128.png" />
+            <img alt="Avatar" src={this.state.imageURL} />
           </p>
         </figure>
         <div className="media-content">
@@ -59,7 +66,9 @@ class CommentForm extends Component {
                 className="textarea"
                 placeholder='Add comment...'
                 value={this.state.text}
-                onChange={this.handleTextChange} />
+                onChange={this.handleTextChange} 
+                onKeyPress={this.handleKeyPress}
+                />
             </p>
           </div>
 
