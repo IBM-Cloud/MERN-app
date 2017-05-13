@@ -24,15 +24,16 @@ app.use(bodyParser.json());
 const options = {
   host: 'localhost',
   port: 6379
-}
+};
 
-app.use(session({
+var sess = {
   store: new RedisStore(options),
   name: 'mern example',
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true
-}))
+  saveUninitialized: true,
+  cookie: {}
+};
 
 if (process.env.NODE_ENV == 'production') {
   console.log('Using production mode');
@@ -40,7 +41,12 @@ if (process.env.NODE_ENV == 'production') {
   app.use(compression());
 
   app.use(express.static('build'));
+  
+  app.set('trust proxy', 1); // trust the first proxy
+  sess.cookie.secure = true;
 }
+
+app.use(session(sess));
 
 router.get('/', function (req, res) {
   res.json({ message: 'API initialized' })
@@ -48,6 +54,9 @@ router.get('/', function (req, res) {
 
 router.route('/comments')
   .get(function (req, res) {
+
+    // console.log(req.session);
+
     Comment.find(function (err, comments) {
       if (err)
         res.send(err);
@@ -87,6 +96,11 @@ router.route('/comments/:comment_id')
       res.json( { message: 'Comment has been deleted' })
     });
   });
+
+router.get('/logout', (req, res) => {
+  res.session.destroy();
+})
+
 
 app.use('/api', router);
 
