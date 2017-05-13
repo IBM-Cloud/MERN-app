@@ -4,6 +4,21 @@ import marked from 'marked';
 import 'bulma/css/bulma.css'
 
 class Comment extends Component {
+
+  constructor(props) {
+    super(props);
+ 
+    this.deleteComment = this.deleteComment.bind(this);
+
+  }
+
+  deleteComment(e) {
+    e.preventDefault();
+    let id = this.props.uniqueID;
+    this.props.onCommentDelete(id);
+    console.log('oops deleted');
+  }
+
   rawMarkup() {
     let rawMarkup = marked(this.props.children.toString());
     return { __html: rawMarkup };
@@ -15,7 +30,7 @@ class Comment extends Component {
       <article className="media">
         <figure className="media-left">
           <p className="image is-64x64">
-            <img alt="Image" src={this.props.imageURL} />
+            <img alt="Avatar" src={this.props.imageURL} />
           </p>
         </figure>
         <div className="media-content">
@@ -39,7 +54,10 @@ class Comment extends Component {
           </nav>
         </div>
         <div>
-          <button className="delete"></button>
+          <button
+            onClick={ this.deleteComment } 
+            className="delete"
+            ></button>
         </div>
       </article>
       </div>

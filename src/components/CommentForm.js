@@ -7,7 +7,12 @@ import 'bulma/css/bulma.css';
 class CommentForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { author: 'Anton', text: '' };
+    this.state = { 
+      author: 'Anton Dochtermann', 
+      text: '',
+      imageURL: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg' 
+    };
+
     this.handleAuthorChange = this.handleAuthorChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,7 +34,7 @@ class CommentForm extends Component {
       return;
     }
 
-    this.props.onCommentSubmit({ author: author, text: text });
+    this.props.onCommentSubmit({ author: author, text: text, imageURL: this.state.imageURL });
     this.setState({ author: '', text: '' });
 
     console.log(`${this.state.author} said ${this.state.text}`)
@@ -42,7 +47,7 @@ class CommentForm extends Component {
 
         <figure className="media-left">
           <p className="image is-64x64">
-            <img src="http://bulma.io/images/placeholders/128x128.png" />
+            <img alt="Avatar" src="http://bulma.io/images/placeholders/128x128.png" />
           </p>
         </figure>
         <div className="media-content">

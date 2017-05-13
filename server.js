@@ -58,6 +58,18 @@ router.route('/comments')
     });
   });
 
+router.route('/comments/:comment_id')
+  .put(function(req, res) {
+
+  })
+  .delete(function(req, res) {
+    Comment.remove({ _id: req.params.comment_id }, function(err, comment) {
+      if (err) 
+        res.send(err);
+      res.json( { message: 'Comment has been deleted' })
+    });
+  });
+
 app.use('/api', router);
 
 app.listen(port, function () {

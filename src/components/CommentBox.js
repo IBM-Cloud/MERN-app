@@ -8,12 +8,14 @@ import CommentForm from './CommentForm';
 import 'bulma/css/bulma.css';
 
 class CommentBox extends Component {
+
   constructor(props) {
     super(props);
     this.state = { data: [] };
 
     this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+    this.handleCommentDelete = this.handleCommentDelete.bind(this);
 
   }
 
@@ -35,6 +37,16 @@ class CommentBox extends Component {
       });
   }
 
+  handleCommentDelete(id) {
+    axios.delete(`${this.props.url}/${id}`)
+      .then(res => {
+        console.log('Comment deleted');
+      })
+      .catch( err => {
+        console.error(err);
+      })
+  }
+
   componentDidMount() {
     this.loadCommentsFromServer();
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
@@ -45,9 +57,14 @@ class CommentBox extends Component {
       <section className="section">
         <div className="container">
 
-        <CommentList data={ this.state.data }/>
+        <CommentList 
+          data={ this.state.data }
+          onCommentDelete={ this.handleCommentDelete }
+        />
         <hr/>
-        <CommentForm onCommentSubmit={ this.handleCommentSubmit }/>
+        <CommentForm 
+          onCommentSubmit={ this.handleCommentSubmit }
+        />
         </div>
       </section>
     )
