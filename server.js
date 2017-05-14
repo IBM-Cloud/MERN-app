@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var RedisStore = require('connect-redis')(session);
+var MongoStore = require('connect-mongo')(session);
 
 var Comment = require('./model/comments');
 
@@ -23,11 +23,11 @@ app.use(bodyParser.json());
 
 const options = {
   host: 'localhost',
-  port: 6379
+  port: 27017
 };
 
 var sess = {
-  store: new RedisStore(options),
+  store: new MongoStore({mongooseConnection: mongoose.connection }),
   name: 'mern example',
   secret: 'keyboard cat',
   resave: true,
@@ -99,6 +99,14 @@ router.route('/comments/:comment_id')
 
 router.get('/logout', (req, res) => {
   res.session.destroy();
+})
+
+router.get('/login', (req, res) => {
+  const author = req.body.author;
+  const twitter = req.body.twitter;
+  const imageURL = req.body.imageURL;
+
+
 })
 
 
