@@ -13,18 +13,14 @@ var Comment = require('./model/comments');
 var app = express();
 var router = express.Router();
 
-var port = process.env.API_PORT || 3001;
+const port = process.env.API_PORT || 3001;
+const mongoURL = process.env.MONGO_URL || 'localhost/comments';
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/comments');
+mongoose.connect(`mongodb://${mongoURL}`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-const options = {
-  host: 'localhost',
-  port: 27017
-};
 
 var sess = {
   store: new MongoStore({mongooseConnection: mongoose.connection }),
@@ -64,10 +60,13 @@ router.route('/comments')
     });
   })
   .post(function(req, res) {
-    const author = req.body.author;
+    // const author = req.body.author;
     const text = req.body.text;
-    const twitter = req.body.twitter;
-    const imageURL = req.body.imageURL;
+    // const twitter = req.body.twitter;
+    //const imageURL = req.body.imageURL;
+    const author = req.session.author;
+    const twitter = req.session.twitter;
+    const imageURL = req.session.imageURL;
 
     const comment = new Comment(
       {
@@ -97,15 +96,22 @@ router.route('/comments/:comment_id')
     });
   });
 
-router.get('/logout', (req, res) => {
+router.post('/comments/logout', (req, res) => {
   res.session.destroy();
 })
 
-router.get('/login', (req, res) => {
+router.post('/comments/login', (req, res) => {
   const author = req.body.author;
   const twitter = req.body.twitter;
   const imageURL = req.body.imageURL;
 
+  console.log(`Received sign in request from ${author}, ${twitter}, ${imageURL}`);
+
+  req.session.author = author;
+  req.session.twitter = twitter;
+  req.session.imageURL = imageURL;
+
+  res.json({message: 'Successfully logged in'});
 
 })
 

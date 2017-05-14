@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import Login from './Login';
 
 import 'bulma/css/bulma.css';
 
@@ -16,6 +17,7 @@ class CommentBox extends Component {
     this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.handleCommentDelete = this.handleCommentDelete.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
 
   }
 
@@ -35,6 +37,16 @@ class CommentBox extends Component {
       .catch(err => {
         console.error(err);
       });
+  }
+
+  handleLogin(loginInfo) {
+    axios.post(`${this.props.url}/login`, loginInfo)
+      .then( res => {
+        console.log('Logged in!');
+      })
+      .catch( err => {
+        console.error(err);
+      })
   }
 
   handleCommentDelete(id) {
@@ -74,6 +86,10 @@ class CommentBox extends Component {
         <hr/>
         <CommentForm 
           onCommentSubmit={ this.handleCommentSubmit }
+        />
+        <br/>
+        <Login 
+          onLogin={ this.handleLogin }
         />
         </div>
       </section>
