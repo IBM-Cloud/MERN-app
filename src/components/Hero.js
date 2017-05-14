@@ -9,10 +9,10 @@ class Hero extends Component {
         <div className="hero-body">
           <div className="container">
             <h1 className="title">
-              Social Comment Board
+              Social Media Comments
             </h1>
             <h2 className="subtitle">
-              MERN application starter
+              MERN application example
             </h2>
           </div>
         </div>

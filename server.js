@@ -4,18 +4,32 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+
+var MongoStore = require('connect-mongo')(session);
+
 var Comment = require('./model/comments');
 
 var app = express();
 var router = express.Router();
 
-var port = process.env.API_PORT || 3001;
+const port = process.env.API_PORT || 3001;
+const mongoURL = process.env.MONGO_URL || 'localhost/comments';
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/comments');
+mongoose.connect(`mongodb://${mongoURL}`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+var sess = {
+  store: new MongoStore({mongooseConnection: mongoose.connection }),
+  name: 'mern example',
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {}
+};
 
 if (process.env.NODE_ENV == 'production') {
   console.log('Using production mode');
@@ -23,7 +37,12 @@ if (process.env.NODE_ENV == 'production') {
   app.use(compression());
 
   app.use(express.static('build'));
+  
+  app.set('trust proxy', 1); // trust the first proxy
+  sess.cookie.secure = true;
 }
+
+app.use(session(sess));
 
 router.get('/', function (req, res) {
   res.json({ message: 'API initialized' })
@@ -31,6 +50,9 @@ router.get('/', function (req, res) {
 
 router.route('/comments')
   .get(function (req, res) {
+
+    // console.log(req.session);
+
     Comment.find(function (err, comments) {
       if (err)
         res.send(err);
@@ -38,10 +60,13 @@ router.route('/comments')
     });
   })
   .post(function(req, res) {
-    const author = req.body.author;
+    // const author = req.body.author;
     const text = req.body.text;
-    const twitter = req.body.twitter;
-    const imageURL = req.body.imageURL;
+    // const twitter = req.body.twitter;
+    //const imageURL = req.body.imageURL;
+    const author = req.session.author;
+    const twitter = req.session.twitter;
+    const imageURL = req.session.imageURL;
 
     const comment = new Comment(
       {
@@ -70,6 +95,26 @@ router.route('/comments/:comment_id')
       res.json( { message: 'Comment has been deleted' })
     });
   });
+
+router.post('/comments/logout', (req, res) => {
+  res.session.destroy();
+})
+
+router.post('/comments/login', (req, res) => {
+  const author = req.body.author;
+  const twitter = req.body.twitter;
+  const imageURL = req.body.imageURL;
+
+  console.log(`Received sign in request from ${author}, ${twitter}, ${imageURL}`);
+
+  req.session.author = author;
+  req.session.twitter = twitter;
+  req.session.imageURL = imageURL;
+
+  res.json({message: 'Successfully logged in'});
+
+})
+
 
 app.use('/api', router);
 
