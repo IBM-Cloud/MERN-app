@@ -36,7 +36,7 @@ class Login extends Component {
             twitter: twitter
         });
 
-        this.setState({ author: '', imageURL: '', twitter: '' });
+        // this.setState({ author: '', imageURL: '', twitter: '' });
 
     }
 

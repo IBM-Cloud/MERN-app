@@ -8,10 +8,7 @@ class CommentForm extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      author: 'Anton Dochtermann', 
-      twitter: 'mathgeek',
-      text: '',
-      imageURL: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg' 
+      text: ''
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -31,19 +28,15 @@ class CommentForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let author = this.state.author.trim();
     let text = this.state.text.trim();
-    if (!text || !author) {
-      console.log(`Missing info, author: ${author} and text: ${text}`);
+    if (!text) {
+      console.log(`Missing text: ${text}`);
       return;
     }
 
     this.props.onCommentSubmit(
       { 
-        author: author, 
-        text: text, 
-        imageURL: this.state.imageURL,
-        twitter: this.state.twitter
+        text: text
      });
 
     this.setState({ text: '' });
@@ -56,7 +49,7 @@ class CommentForm extends Component {
 
         <figure className="media-left">
           <p className="image is-64x64">
-            <img alt="Avatar" src={this.state.imageURL} />
+            <img alt="Avatar" src={this.props.imageURL} />
           </p>
         </figure>
         <div className="media-content">

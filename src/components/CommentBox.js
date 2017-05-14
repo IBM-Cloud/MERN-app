@@ -12,7 +12,14 @@ class CommentBox extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { data: [] };
+
+    const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {author: '', imageURL: '', twitter: ''};
+    const data = JSON.parse(localStorage.getItem('comments')) || [];
+    
+    this.state = { 
+      data: data,
+      userInfo: userInfo
+    };
 
     this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
@@ -23,11 +30,17 @@ class CommentBox extends Component {
 
   loadCommentsFromServer() {
     axios.get(this.props.url).then( res => {
+      localStorage.setItem('comments', JSON.stringify(res.data));
       this.setState({ data: res.data });
     })
   }
 
   handleCommentSubmit(comment) {
+
+    comment.imageURL = this.state.userInfo.imageURL;
+    comment.twitter = this.state.userInfo.twitter;
+    comment.author = this.state.userInfo.author;
+
     let comments = this.state.data;
     comment._id = Date.now();
     let newComments = comments.concat([comment]);
@@ -40,9 +53,30 @@ class CommentBox extends Component {
   }
 
   handleLogin(loginInfo) {
+
+    const userInfo = {
+            author: loginInfo.author, 
+            imageURL: loginInfo.imageURL,
+            twitter: loginInfo.twitter
+          };
+
+    this.setState({ userInfo: userInfo });
+
     axios.post(`${this.props.url}/login`, loginInfo)
       .then( res => {
         console.log('Logged in!');
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        
+      })
+      .catch( err => {
+        console.error(err);
+      })
+  }
+
+  handleLogout() {
+    axios.post(`${this.props.url}/logout`)
+      .then( res => {
+        localStorage.delete('userInfo');
       })
       .catch( err => {
         console.error(err);
@@ -53,7 +87,6 @@ class CommentBox extends Component {
 
     let comments = this.state.data;
 
-    // comments.splice(0, 1);
     let newComments = comments.filter( (t) => {
       return t._id !== id 
     });
@@ -85,6 +118,7 @@ class CommentBox extends Component {
         />
         <hr/>
         <CommentForm 
+          imageURL={ this.state.userInfo.imageURL }
           onCommentSubmit={ this.handleCommentSubmit }
         />
         <br/>
