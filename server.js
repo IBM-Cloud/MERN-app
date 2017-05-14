@@ -13,11 +13,13 @@ var Comment = require('./model/comments');
 var app = express();
 var router = express.Router();
 
-const port = process.env.API_PORT || 3001;
+const port = process.env.PORT || 3001;
 const mongoURL = process.env.MONGO_URL || 'localhost/comments';
+const mongoUser = process.env.MONGO_USER || '';
+const mongoPass = process.env.MONGO_PASS || '';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${mongoURL}`);
+mongoose.connect(`mongodb://${mongoUser}:${mongoPass}@${mongoURL}`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -38,8 +40,8 @@ if (process.env.NODE_ENV == 'production') {
 
   app.use(express.static('build'));
   
-  app.set('trust proxy', 1); // trust the first proxy
-  sess.cookie.secure = true;
+  //app.set('trust proxy', 1); // trust the first proxy
+  //sess.cookie.secure = true;
 }
 
 app.use(session(sess));

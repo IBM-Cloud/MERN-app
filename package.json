@@ -22,11 +22,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-dev": "nf start -p 3000",
+    "start-dev": "nf start -j Procfile-dev -p 3000",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "start-prod": "node server.js"
+    "start-prod": "nf start"
   },
   "proxy": "http://localhost:3001"
 }
