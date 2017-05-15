@@ -15,19 +15,31 @@
 2. Start the development environment
 
   ```
-  yarn start-dev`
+  yarn start-dev
   ```
   
 ## Configuration (Optional)
 
 You can create a `.env` file for specifying credential information for MongoDB. 
 
-Create a new file called `.env` and put:
+Create a new file called `.env` and put YAML:
 
-```
+```yaml
 MONGO_URL=mongodb://localhost:27017/comments
 MONGO_USER=username
 MONGO_PASSWORD=password
+```
+
+or the equivalent JSON:
+
+```json
+{
+  "mongo": {
+    "url": "mongodb://localhost:27017/comments",
+    "user": "username",
+    "password": "password"
+  }
+}
 ```
 
 Where the URL, username, and password are set to your preferences.
