@@ -1,0 +1,10 @@
+
+FROM node/boron
+
+ADD . /app
+
+EXPOSE 3000
+
+WORKDIR "/app"
+
+CMD ["yarn", "start-dev"]
