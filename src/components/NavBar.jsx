@@ -7,9 +7,9 @@ class NavBar extends Component {
     return (
       <nav className="nav">
   <div className="nav-left">
-    <a className="nav-item">
+    {/*<a className="nav-item">
       <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo"/>
-    </a>
+    </a>*/}
   </div>
 
   <div className="nav-center">

@@ -13,11 +13,19 @@ var Comment = require('./model/comments');
 var app = express();
 var router = express.Router();
 
-const port = process.env.API_PORT || 3001;
+const port = process.env.API_PORT || process.env.PORT || 3001;
 const mongoURL = process.env.MONGO_URL || 'localhost/comments';
+const mongoUser = process.env.MONGO_USER || '';
+const mongoPass = process.env.MONGO_PASS || '';
+
+if (mongoUser !== '' && mongoPass !== '') {
+  const mongoURL = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}`
+} else {
+  const mongoURL =  'mongodb://localhost:27017'
+}
 
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${mongoURL}`);
+mongoose.connect(mongoURL);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -60,13 +68,16 @@ router.route('/comments')
     });
   })
   .post(function(req, res) {
-    // const author = req.body.author;
+  
     const text = req.body.text;
-    // const twitter = req.body.twitter;
-    //const imageURL = req.body.imageURL;
     const author = req.session.author;
     const twitter = req.session.twitter;
     const imageURL = req.session.imageURL;
+
+    if (!text || !author || !twitter || !imageURL ) {
+      res.json({ message: 'Not signed in'});
+      next();
+    }
 
     const comment = new Comment(
       {
@@ -97,8 +108,12 @@ router.route('/comments/:comment_id')
   });
 
 router.post('/comments/logout', (req, res) => {
-  res.session.destroy();
-})
+
+  req.session.destroy();
+  console.log('Logged out');
+ 
+  res.json({message: 'Successfully logged out'});
+});
 
 router.post('/comments/login', (req, res) => {
   const author = req.body.author;
@@ -113,8 +128,15 @@ router.post('/comments/login', (req, res) => {
 
   res.json({message: 'Successfully logged in'});
 
-})
+});
 
+router.get('/comments/session', (req, res) => {
+  res.json({
+    author: req.session.author,
+    twitter: req.session.twitter,
+    imageURL: req.session.imageURL
+  });
+});
 
 app.use('/api', router);
 
