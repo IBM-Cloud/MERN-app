@@ -1,10 +1,9 @@
-
-FROM node/boron
-
-ADD . /app
+FROM node:alpine
 
 EXPOSE 3000
 
 WORKDIR "/app"
+
+RUN yarn
 
 CMD ["yarn", "start-dev"]

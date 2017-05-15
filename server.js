@@ -18,8 +18,14 @@ const mongoURL = process.env.MONGO_URL || 'localhost/comments';
 const mongoUser = process.env.MONGO_USER || '';
 const mongoPass = process.env.MONGO_PASS || '';
 
+if (mongoUser !== '' && mongoPass !== '') {
+  const mongoURL = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}`
+} else {
+  const mongoURL =  'mongodb://localhost:27017'
+}
+
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${mongoUser}:${mongoPass}@${mongoURL}`);
+mongoose.connect(mongoURL);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
