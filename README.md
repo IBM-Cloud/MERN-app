@@ -6,8 +6,45 @@
 
 ## Getting Started
 
-  - `yarn`
-  - `yarn start-dev`
+1. Install dependencies with 
+
+  ```
+  yarn
+  ````
+  
+2. Start the development environment
+
+  ```
+  yarn start-dev`
+  ```
+  
+## Configuration (Optional)
+
+You can create a `.env` file for specifying credential information for MongoDB. 
+
+Create a new file called `.env` and put:
+
+```
+MONGO_URL=mongodb://localhost:27017/comments
+MONGO_USER=username
+MONGO_PASSWORD=password
+```
+
+Where the URL, username, and password are set to your preferences.
+
+## Docker Development run
+
+You can set up a local Docker development environment by building the image:
+
+```
+docker build -f Dockerfile-tools -t rfdickerson/mern-example .
+```
+
+And running the image:
+
+```
+docker run -p 3000:3000 -v ${PWD}:/app -t rfdickerson/mern-example
+```
 
 ## Libraries
 
