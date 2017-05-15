@@ -62,13 +62,16 @@ router.route('/comments')
     });
   })
   .post(function(req, res) {
-    // const author = req.body.author;
+  
     const text = req.body.text;
-    // const twitter = req.body.twitter;
-    //const imageURL = req.body.imageURL;
     const author = req.session.author;
     const twitter = req.session.twitter;
     const imageURL = req.session.imageURL;
+
+    if (!text || !author || !twitter || !imageURL ) {
+      res.json({ message: 'Not signed in'});
+      next();
+    }
 
     const comment = new Comment(
       {

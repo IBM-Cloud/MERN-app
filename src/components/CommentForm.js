@@ -71,27 +71,29 @@ class CommentForm extends Component {
             </p>
           </div>
 
-          <div className="field">
-            <p className="control">
-              <a
+          <nav className="level">
+            <div className="level-left">
+              <div className="level-item">
+                 <a
                 className="button is-info"
                 type='submit'
                 value='Post'
                 onClick={this.handleSubmit}
               >Submit</a>
-            </p>
-          </div>
+                </div>
+              </div>
 
-          <div className="field">
-            <p className="control">
-              <a
+             <div className="level-right">
+              <div className="level-item">
+                 <a
                 className="button is-info"
                 type='submit'
                 value='Logout'
-                onClick={this.props.onLogout}
+                onClick={this.handleLogout}
               >Logout</a>
-            </p>
-          </div>
+                </div>
+                </div>
+          </nav>
         </div>
 
       </article >
