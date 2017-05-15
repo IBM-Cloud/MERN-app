@@ -9,7 +9,6 @@ class Comment extends Component {
     super(props);
  
     this.deleteComment = this.deleteComment.bind(this);
-
   }
 
   deleteComment(e) {

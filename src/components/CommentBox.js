@@ -13,7 +13,7 @@ class CommentBox extends Component {
   constructor(props) {
     super(props);
 
-    const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {author: '', imageURL: '', twitter: ''};
+    const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
     const data = JSON.parse(localStorage.getItem('comments')) || [];
     
     this.state = { 
@@ -25,6 +25,7 @@ class CommentBox extends Component {
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.handleCommentDelete = this.handleCommentDelete.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
 
   }
 
@@ -36,7 +37,6 @@ class CommentBox extends Component {
   }
 
   handleCommentSubmit(comment) {
-
     comment.imageURL = this.state.userInfo.imageURL;
     comment.twitter = this.state.userInfo.twitter;
     comment.author = this.state.userInfo.author;
@@ -53,7 +53,6 @@ class CommentBox extends Component {
   }
 
   handleLogin(loginInfo) {
-
     const userInfo = {
             author: loginInfo.author, 
             imageURL: loginInfo.imageURL,
@@ -73,10 +72,13 @@ class CommentBox extends Component {
       })
   }
 
-  handleLogout() {
+  handleLogout(e) {
+    
     axios.post(`${this.props.url}/logout`)
       .then( res => {
-        localStorage.delete('userInfo');
+        localStorage.removeItem('userInfo');
+        this.setState({ userInfo: {} });
+        console.log('Logged out!');
       })
       .catch( err => {
         console.error(err);
@@ -120,6 +122,7 @@ class CommentBox extends Component {
         <CommentForm 
           imageURL={ this.state.userInfo.imageURL }
           onCommentSubmit={ this.handleCommentSubmit }
+          onLogout={ this.handleLogout }
         />
         <br/>
         <Login 

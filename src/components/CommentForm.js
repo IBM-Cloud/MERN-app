@@ -7,13 +7,15 @@ import 'bulma/css/bulma.css';
 class CommentForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       text: ''
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+
   }
 
   handleTextChange(e) {
@@ -35,18 +37,22 @@ class CommentForm extends Component {
     }
 
     this.props.onCommentSubmit(
-      { 
+      {
         text: text
-     });
+      });
 
     this.setState({ text: '' });
 
   }
 
+  handleLogout(e) {
+    e.preventDefault();
+    this.props.onLogout();
+  }
+
   render() {
     return (
       <article className="media">
-
         <figure className="media-left">
           <p className="image is-64x64">
             <img alt="Avatar" src={this.props.imageURL} />
@@ -59,9 +65,9 @@ class CommentForm extends Component {
                 className="textarea"
                 placeholder='Add comment...'
                 value={this.state.text}
-                onChange={this.handleTextChange} 
+                onChange={this.handleTextChange}
                 onKeyPress={this.handleKeyPress}
-                />
+              />
             </p>
           </div>
 
@@ -75,9 +81,20 @@ class CommentForm extends Component {
               >Submit</a>
             </p>
           </div>
+
+          <div className="field">
+            <p className="control">
+              <a
+                className="button is-info"
+                type='submit'
+                value='Logout'
+                onClick={this.props.onLogout}
+              >Logout</a>
+            </p>
+          </div>
         </div>
 
-      </article>
+      </article >
     )
   }
 }
