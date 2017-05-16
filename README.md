@@ -1,34 +1,18 @@
-# MERN stack starter
+# MERN stack starter [![Build Status](https://travis-ci.org/rfdickerson/mern-example.svg?branch=master)](https://travis-ci.org/rfdickerson/mern-example)
 
-[![Build Status](https://travis-ci.org/rfdickerson/mern-example.svg?branch=master)](https://travis-ci.org/rfdickerson/mern-example)
+The MERN stack starter demonstrates a working application that uses a React frontend, with a backend build with ExpressJS and MongoDB. It shows how the client can make client HTTP requests and maintain persistant sessions. 
 
 ## Getting Started
 
 1. Install dependencies with 
 
-  ```
-  npm install
-  ```
+  `npm install` or `yarn`
   
-  or 
-  
-  ```
-  yarn
-  ````
-
 2. Install MongoDB
   
 3. Start the development environment
 
-  ```
-  npm run start-dev
-  ```
-  
-  or 
-  
-  ```
-  yarn start-dev
-  ```
+  `npm run start-dev` or `yarn start-dev`
 
 ## Docker Compose
 
