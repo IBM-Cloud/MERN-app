@@ -4,19 +4,21 @@ The MERN stack starter demonstrates a working application that uses a React fron
 
 ## Getting Started
 
-  Install dependencies with:
+To run a development environment, you can use the `start-dev` command. This will start up a development web server on port 3000, and a nodemon-watched API server on port 3100. These development servers will automatically reload if changes are made to the source.
 
-  ```
-  yarn
-  ```
+  - Install dependencies with:
+
+    ```
+    yarn
+    ```
   
-Install [MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+  - Install [MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
    
-Start the development environment:
+  - Start the development environment:
 
-  ```
-  yarn start-dev
-  ```
+    ```
+    yarn start-dev
+    ```
 
 ## Docker Compose
 
@@ -54,7 +56,7 @@ Where the URL, username, and password are set to your preferences.
 
 ## Docker Development run
 
-You can set up a local Docker development environment by building the image:
+If you would like to run the development tools inside of a docker container, you can set up a local Docker development environment by building the image:
 
 ```
 docker build -f Dockerfile-tools -t rfdickerson/mern-example .
@@ -66,7 +68,9 @@ And running the image:
 docker run -p 3000:3000 -v ${PWD}:/app -t rfdickerson/mern-example
 ```
 
-## Libraries
+
+
+## Dependencies
 
   - [axios](https://github.com/mzabriskie/axios) - promise-based HTTP client
   - [foreman](https://github.com/strongloop/node-foreman) - a Procfile-based application utility
