@@ -15,8 +15,10 @@
   ```
   yarn
   ````
+
+2. Install MongoDB
   
-2. Start the development environment
+3. Start the development environment
 
   ```
   npm run start-dev
@@ -27,7 +29,15 @@
   ```
   yarn start-dev
   ```
-  
+
+## Docker Compose
+
+If you use Docker and Docker Compose, you can start the entire project with:
+
+```
+docker-compose up
+```
+ 
 ## Configuration (Optional)
 
 You can create a `.env` file for specifying credential information for MongoDB. 
