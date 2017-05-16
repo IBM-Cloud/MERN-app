@@ -6,27 +6,31 @@ The MERN stack starter demonstrates a working application that uses a React fron
 
 1. Install dependencies with 
 
-  `npm install` or `yarn`
+  ```
+  yarn
+  ```
   
 2. Install MongoDB
   
 3. Start the development environment
 
-  `npm run start-dev` or `yarn start-dev`
+  ```
+  yarn start-dev
+  ```
 
 ## Docker Compose
 
-If you use Docker and Docker Compose, you can start the entire project with:
+  If you use Docker and Docker Compose, you can start the entire project with:
 
-```
-docker-compose up
-```
+  ```
+  docker-compose up
+  ```
  
 ## Configuration (Optional)
 
-You can create a `.env` file for specifying credential information for MongoDB. 
+By default, the server will expect to connect to a MongoDB instance running on localhost:27017. However, you can customize the environment to use different values for the MongoDB host. To do that, you can create a `.env` file for specifying credential information for MongoDB. 
 
-Create a new file called `.env` and put YAML:
+Create a new file called `.env`, with the following YAML:
 
 ```yaml
 MONGO_URL=mongodb://localhost:27017/comments
