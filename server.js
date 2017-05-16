@@ -18,14 +18,17 @@ const mongoURL = process.env.MONGO_URL || 'localhost/comments';
 const mongoUser = process.env.MONGO_USER || '';
 const mongoPass = process.env.MONGO_PASS || '';
 
-if (mongoUser !== '' && mongoPass !== '') {
-  const mongoURL = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}`
-} else {
-  const mongoURL =  'mongodb://localhost:27017'
+console.log(`mongoURL is ${mongoURL}`);
+
+let mongoConnect = 'mongodb://localhost:27017'
+if (mongoURL !== '' && mongoUser !== '' && mongoPass != '') {
+  mongoConnect = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}`;
+} else if (mongoURL !== '') {
+  mongoConnect = `mongodb://${mongoURL}`;
 }
 
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoURL);
+mongoose.connect(mongoConnect);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -76,7 +79,7 @@ router.route('/comments')
 
     if (!text || !author || !twitter || !imageURL ) {
       res.json({ message: 'Not signed in'});
-      next();
+      return
     }
 
     const comment = new Comment(
