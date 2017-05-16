@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var morgan = require('morgan');
 var pino = require('pino')();
-
 var MongoStore = require('connect-mongo')(session);
 
 var Comment = require('./model/comments');
@@ -14,14 +13,14 @@ var Comment = require('./model/comments');
 var app = express();
 var router = express.Router();
 
+// user set variables
 const port = process.env.API_PORT || process.env.PORT || 3001;
 const mongoURL = process.env.MONGO_URL || 'localhost/comments';
 const mongoUser = process.env.MONGO_USER || '';
 const mongoPass = process.env.MONGO_PASS || '';
 const staticDir = process.env.STATIC_DIR || 'build';
 
-console.log(`mongoURL is ${mongoURL}`);
-
+// connect to the MongoDB
 let mongoConnect = 'mongodb://localhost:27017'
 if (mongoURL !== '' && mongoUser !== '' && mongoPass != '') {
   mongoConnect = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}`;
@@ -30,13 +29,22 @@ if (mongoURL !== '' && mongoUser !== '' && mongoPass != '') {
 }
 
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoConnect);
+mongoose.connect(mongoConnect)
+  .catch((err) => {
+    if (err) pino.error(err);
+  });
 
+var db = mongoose.connection;
+db.on('error', (error) => {
+  pino.error(error);
+});
+
+// set up other middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var sess = {
-  store: new MongoStore({mongooseConnection: mongoose.connection }),
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   name: 'mern example',
   secret: 'keyboard cat',
   resave: true,
@@ -44,13 +52,14 @@ var sess = {
   cookie: {}
 };
 
+// production only middleware
 if (process.env.NODE_ENV == 'production') {
   pino.log('Using production mode');
   var compression = require('compression');
   app.use(compression());
 
   app.use(express.static(staticDir));
-  
+
   app.set('trust proxy', 1); // trust the first proxy
   sess.cookie.secure = true;
 
@@ -66,61 +75,58 @@ router.get('/', function (req, res) {
 
 router.route('/comments')
   .get(function (req, res) {
-
-    // pino.info(req.session);
-
     Comment.find(function (err, comments) {
       if (err)
         res.send(err);
       res.json(comments);
     });
   })
-  .post(function(req, res) {
-  
+  .post(function (req, res) {
+
     const text = req.body.text;
     const author = req.session.author;
     const twitter = req.session.twitter;
     const imageURL = req.session.imageURL;
 
-    if (!text || !author || !twitter || !imageURL ) {
-      res.json({ message: 'Not signed in'});
+    if (!text || !author || !twitter || !imageURL) {
+      res.json({ message: 'Not signed in' });
       return
     }
 
     const comment = new Comment(
       {
-        author: author, 
+        author: author,
         text: text,
         twitter: twitter,
         imageURL: imageURL
       }
-      );
+    );
 
-    comment.save(function(err) {
-      if (err) 
-      res.send(err);
+    comment.save(function (err) {
+      if (err)
+        res.send(err);
       res.json({ message: 'Comment successfully added!' })
     });
   });
 
 router.route('/comments/:comment_id')
-  .put(function(req, res) {
+  .put(function (req, res) {
 
   })
-  .delete(function(req, res) {
-    Comment.remove({ _id: req.params.comment_id }, function(err, comment) {
-      if (err) 
+  .delete(function (req, res) {
+    Comment.remove({ _id: req.params.comment_id }, function (err, comment) {
+      if (err)
         res.send(err);
-      res.json( { message: 'Comment has been deleted' })
+      res.json({ message: 'Comment has been deleted' })
     });
   });
 
 router.post('/comments/logout', (req, res) => {
 
   req.session.destroy();
-  req.log('Logged out');
- 
-  res.json({message: 'Successfully logged out'});
+  pino.info('Logged out');
+
+  res.json({ message: 'Successfully logged out' });
 });
 
 router.post('/comments/login', (req, res) => {
@@ -134,7 +140,7 @@ router.post('/comments/login', (req, res) => {
   req.session.twitter = twitter;
   req.session.imageURL = imageURL;
 
-  res.json({message: 'Successfully logged in'});
+  res.json({ message: 'Successfully logged in' });
 
 });
 
