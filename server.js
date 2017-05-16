@@ -1,10 +1,11 @@
-//server.js
 'use strict'
 
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var morgan = require('morgan');
+var pino = require('pino')();
 
 var MongoStore = require('connect-mongo')(session);
 
@@ -17,6 +18,7 @@ const port = process.env.API_PORT || process.env.PORT || 3001;
 const mongoURL = process.env.MONGO_URL || 'localhost/comments';
 const mongoUser = process.env.MONGO_USER || '';
 const mongoPass = process.env.MONGO_PASS || '';
+const staticDir = process.env.STATIC_DIR || 'build';
 
 console.log(`mongoURL is ${mongoURL}`);
 
@@ -43,17 +45,20 @@ var sess = {
 };
 
 if (process.env.NODE_ENV == 'production') {
-  console.log('Using production mode');
+  pino.log('Using production mode');
   var compression = require('compression');
   app.use(compression());
 
-  app.use(express.static('build'));
+  app.use(express.static(staticDir));
   
   app.set('trust proxy', 1); // trust the first proxy
   sess.cookie.secure = true;
+
+  app.use(morgan('combined'));
 }
 
 app.use(session(sess));
+
 
 router.get('/', function (req, res) {
   res.json({ message: 'API initialized' })
@@ -62,7 +67,7 @@ router.get('/', function (req, res) {
 router.route('/comments')
   .get(function (req, res) {
 
-    // console.log(req.session);
+    // pino.info(req.session);
 
     Comment.find(function (err, comments) {
       if (err)
@@ -113,7 +118,7 @@ router.route('/comments/:comment_id')
 router.post('/comments/logout', (req, res) => {
 
   req.session.destroy();
-  console.log('Logged out');
+  req.log('Logged out');
  
   res.json({message: 'Successfully logged out'});
 });
@@ -123,7 +128,7 @@ router.post('/comments/login', (req, res) => {
   const twitter = req.body.twitter;
   const imageURL = req.body.imageURL;
 
-  console.log(`Received sign in request from ${author}, ${twitter}, ${imageURL}`);
+  pino.info(`Received sign in request from ${author}, ${twitter}, ${imageURL}`);
 
   req.session.author = author;
   req.session.twitter = twitter;
@@ -144,7 +149,7 @@ router.get('/comments/session', (req, res) => {
 app.use('/api', router);
 
 app.listen(port, function () {
-  console.log(`api running on port ${port}`);
+  pino.info(`api running on port ${port}`);
 });
 
 
