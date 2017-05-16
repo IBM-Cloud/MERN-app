@@ -4,15 +4,15 @@ The MERN stack starter demonstrates a working application that uses a React fron
 
 ## Getting Started
 
-1. Install dependencies with 
+  Install dependencies with:
 
   ```
   yarn
   ```
   
-2. Install MongoDB
-  
-3. Start the development environment
+Install [MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+   
+Start the development environment:
 
   ```
   yarn start-dev
