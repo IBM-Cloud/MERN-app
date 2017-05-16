@@ -2,18 +2,28 @@
 
 [![Build Status](https://travis-ci.org/rfdickerson/mern-example.svg?branch=master)](https://travis-ci.org/rfdickerson/mern-example)
 
-![](https://cloud.githubusercontent.com/assets/1310293/26016982/f111312a-372c-11e7-9005-a1b82e11fc78.png)
-
 ## Getting Started
 
 1. Install dependencies with 
 
+  ```
+  npm install
+  ```
+  
+  or 
+  
   ```
   yarn
   ````
   
 2. Start the development environment
 
+  ```
+  npm run start-dev
+  ```
+  
+  or 
+  
   ```
   yarn start-dev
   ```
@@ -30,7 +40,7 @@ MONGO_USER=username
 MONGO_PASSWORD=password
 ```
 
-or the equivalent JSON:
+or instead, you can use the equivalent JSON:
 
 ```json
 {
