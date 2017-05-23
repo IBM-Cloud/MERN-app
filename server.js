@@ -5,13 +5,15 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var morgan = require('morgan');
-var pino = require('pino')();
+
 var MongoStore = require('connect-mongo')(session);
 
 var Comment = require('./model/comments');
 
 var app = express();
 var router = express.Router();
+
+console.log('Hello world!!!!!');
 
 // user set variables
 const port = process.env.API_PORT || process.env.PORT || 3001;
@@ -28,15 +30,17 @@ if (mongoURL !== '' && mongoUser !== '' && mongoPass != '') {
   mongoConnect = `mongodb://${mongoURL}`;
 }
 
+console.log(`Connect to ${mongoConnect}`);
+
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoConnect)
   .catch((err) => {
-    if (err) pino.error(err);
+    if (err) console.log(err);
   });
 
 var db = mongoose.connection;
 db.on('error', (error) => {
-  pino.error(error);
+  console.log(error);
 });
 
 // set up other middleware
@@ -54,7 +58,7 @@ var sess = {
 
 // production only middleware
 if (process.env.NODE_ENV == 'production') {
-  pino.log('Using production mode');
+  // pino.log('Using production mode');
   var compression = require('compression');
   app.use(compression());
 
@@ -124,7 +128,7 @@ router.route('/comments/:comment_id')
 router.post('/comments/logout', (req, res) => {
 
   req.session.destroy();
-  pino.info('Logged out');
+  // pino.info('Logged out');
 
   res.json({ message: 'Successfully logged out' });
 });
@@ -134,7 +138,7 @@ router.post('/comments/login', (req, res) => {
   const twitter = req.body.twitter;
   const imageURL = req.body.imageURL;
 
-  pino.info(`Received sign in request from ${author}, ${twitter}, ${imageURL}`);
+  // pino.info(`Received sign in request from ${author}, ${twitter}, ${imageURL}`);
 
   req.session.author = author;
   req.session.twitter = twitter;
@@ -155,7 +159,8 @@ router.get('/comments/session', (req, res) => {
 app.use('/api', router);
 
 app.listen(port, function () {
-  pino.info(`api running on port ${port}`);
+  // pino.info(`api running on port ${port}`);
+  console.log(`api running on port ${port}`);
 });
 
 
