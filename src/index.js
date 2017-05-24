@@ -28,11 +28,11 @@ ReactDOM.render(
   <div>
     <NavBar />
     <Hero />
-  <CommentBox 
-    url='/api/comments'
-    pollInterval={2000} 
-  />
-  <Footer />
+    <CommentBox 
+      url='/api/comments'
+      pollInterval={2000} 
+    />
+    <Footer />
   </div>
   ,
   document.getElementById('root')
