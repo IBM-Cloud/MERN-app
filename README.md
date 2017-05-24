@@ -65,7 +65,7 @@ docker build -f Dockerfile-tools -t rfdickerson/mern-example .
 And running the image:
 
 ```
-docker run -p 3000:3000 -v ${PWD}:/app -t rfdickerson/mern-example
+docker run -v ${PWD}:/usr/app -p 3000:3100 -t rfdickerson/mern-example
 ```
 
 

@@ -1,9 +1,0 @@
-FROM node:alpine
-
-EXPOSE 3000
-
-WORKDIR "/app"
-
-RUN yarn
-
-CMD ["yarn", "start-dev"]

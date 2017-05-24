@@ -2,7 +2,7 @@ version: '2'
 services:
   web:
     build: .
-    command: node server.js
+    command: yarn start-dev
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
@@ -12,7 +12,7 @@ services:
       - mongo
     environment:
       MONGO_URL: "mongo/comments"
-      PORT: "3000"
-      NODE_ENV: "production"
+      PORT: "8000"
+      NODE_ENV: "development"
   mongo:
     image: mongo
