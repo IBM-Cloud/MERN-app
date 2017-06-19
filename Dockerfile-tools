@@ -6,6 +6,6 @@ RUN cd /tmp && yarn --quiet
 RUN mkdir -p /usr/app && cp -a /tmp/node_modules /usr/app
 
 WORKDIR /usr/app
-ADD ./ /usr/app/
+# COPY ./ /usr/app/
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start-dev"]
