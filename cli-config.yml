@@ -1,15 +1,15 @@
-version : 0.0.3
+
 
 container-name-run : mern-example-run
 container-name-tools : mern-example-tools
 
-host-path-run : "."
+host-path-run : ""
 host-path-tools : "."
 
-container-path-run : "/usr/app"
+container-path-run : ""
 container-path-tools : "/usr/app"
 
-container-port-map : "3000:3000"
+container-port-map : "3000:3000,3100:3100"
 container-port-map-debug : "5858:5858"
 
 dockerfile-run : "Dockerfile"
@@ -18,7 +18,7 @@ dockerfile-tools : "Dockerfile-tools"
 image-name-run : "mern-example-image-run"
 image-name-tools : "mern-example-image-tools"
 
-build-cmd-run : "npm install"
+build-cmd-run : "/bin/echo hi"
 test-cmd : "npm test"
 build-cmd-debug : "npm run start-dev"
 
