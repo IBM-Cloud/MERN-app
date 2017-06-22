@@ -59,13 +59,35 @@ Where the URL, username, and password are set to your preferences.
 If you would like to run the development tools inside of a docker container, you can set up a local Docker development environment by building the image:
 
 ```
-docker build -f Dockerfile-tools -t rfdickerson/mern-example .
+docker build -f Dockerfile-tools -t mern:v1 .
 ```
 
 And running the image:
 
 ```
-docker run -v ${PWD}:/usr/app -p 3000:3100 -t rfdickerson/mern-example
+docker run -v ${PWD}:/usr/app -p 3000:3100 -t mern:v1
+```
+
+## Kubernetes
+
+You can use Helm for quickly deploying your application.
+
+Optional, if you are using minikube, make sure you set your environment to use it:
+
+```
+eval $(minikube docker-env)
+```
+
+Build your Docker image and give it a tag:
+
+```
+docker build -t mern:v1 .
+```
+
+Install the Helm chart:
+
+```
+helm install helm
 ```
 
 
