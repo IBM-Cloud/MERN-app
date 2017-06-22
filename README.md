@@ -70,9 +70,17 @@ docker run -v ${PWD}:/usr/app -p 3000:3100 -t mern:v1
 
 ## Kubernetes
 
-You can use Helm for quickly deploying your application.
+You can use Helm and our bundled chart for quickly deploying your application.
 
-Optional, if you are using minikube, make sure you set your environment to use it:
+### Locally with minikube
+
+You can use minikube for creating a local testing cluster. Start up your cluster:
+
+```
+minikube start
+```
+
+Make sure you set your Docker environment to use it. This is important so that the cluster has your Docker images.
 
 ```
 eval $(minikube docker-env)
@@ -84,13 +92,33 @@ Build your Docker image and give it a tag:
 docker build -t mern:v1 .
 ```
 
-Install the Helm chart:
+Install the Helm chart located in `helm/mern` on to your cluster:
 
 ```
-helm install helm
+helm install helm/mern
+```
+
+If using minikube, you will need to add port forwarding to be able to view your application:
+
+```
+kubectl port-forward <pod_name> <external_port>:3000
+
+kubectl port-forward mern-deployment-789311257-36s62 32111:3000
 ```
 
 
+Open your browser to http://localhost:32111
+
+If you want to update your application, you can build a new image with a new version tag, e.x. `docker build -t mern:v2 .`. Update the version tag in `helm/mern/values.yml`.
+
+Then, roll out a new release with:
+
+```
+helm upgrade <deployment_name> helm/mern
+helm upgrade limping-bee .
+```
+
+### On Bluemix Kubernetes
 
 ## Dependencies
 
