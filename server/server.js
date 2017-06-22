@@ -159,6 +159,12 @@ router.get('/comments/session', (req, res) => {
 
 app.use('/api', router);
 
+app.get('/health', (req, res) => {
+  res.json({
+    state: "UP"
+  })
+});
+
 app.listen(port, function () {
   pino.info(`api running on port ${port}`);
 });
