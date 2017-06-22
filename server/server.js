@@ -18,17 +18,18 @@ pino.debug('Starting the MERN example');
 
 // user set variables
 const port = process.env.API_PORT || process.env.PORT || 3001;
-const mongoURL = process.env.MONGO_URL || 'localhost/comments';
+const mongoURL = process.env.MONGO_URL || 'localhost';
 const mongoUser = process.env.MONGO_USER || '';
 const mongoPass = process.env.MONGO_PASS || '';
+const mongoDBName = process.env.MONGO_DB_NAME || 'comments';
 const staticDir = process.env.STATIC_DIR || 'build';
 
 // connect to the MongoDB
 let mongoConnect = 'mongodb://localhost:27017'
 if (mongoURL !== '' && mongoUser !== '' && mongoPass != '') {
-  mongoConnect = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}`;
+  mongoConnect = `mongodb://${mongoUser}:${mongoPass}@${mongoURL}/${mongoDBName}`;
 } else if (mongoURL !== '') {
-  mongoConnect = `mongodb://${mongoURL}`;
+  mongoConnect = `mongodb://${mongoURL}/${mongoDBName}`;
 }
 
 pino.info(`Connect to ${mongoConnect}`);

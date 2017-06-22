@@ -25,3 +25,9 @@ spec:
         env:
           - name: MONGO_URL
             value: {{ .Values.services.mongo.url }}
+          - name: MONGO_DB_NAME
+            value: "comments"
+          - name: NODE_ENV
+            value: "production"
+          - name: PORT
+            value: "3000"
