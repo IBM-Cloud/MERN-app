@@ -9,6 +9,9 @@ RUN mkdir -p /usr/app && cp -a /tmp/node_modules /usr/app
 
 WORKDIR /usr/app
 
+# Build optimized React sources
 RUN yarn run build
+
+ENV NODE_ENV "production"
 
 CMD ["yarn", "start-prod"]
