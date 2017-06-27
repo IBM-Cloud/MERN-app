@@ -3,8 +3,8 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: mern
-  tag: v1
+  repository: mern-example
+  tag: latest
   pullPolicy: IfNotPresent
 service:
   name: Node

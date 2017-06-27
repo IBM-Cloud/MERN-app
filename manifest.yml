@@ -2,6 +2,7 @@
 applications:
 - disk_quota: 1024M
   name: mern-example
+  random-route: true
   memory: 128M
   timeout: 180
   buildpack: sdk-for-nodejs

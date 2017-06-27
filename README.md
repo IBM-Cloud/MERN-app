@@ -59,13 +59,13 @@ Where the URL, username, and password are set to your preferences.
 If you would like to run the development tools inside of a docker container, you can set up a local Docker development environment by building the image:
 
 ```
-docker build -f Dockerfile-tools -t mern:v1 .
+docker build -f Dockerfile-tools -t mern-example:latest .
 ```
 
 And running the image:
 
 ```
-docker run -v ${PWD}:/usr/app -p 3000:3100 -t mern:v1
+docker run -v ${PWD}:/usr/app -p 3000:3100 -t mern-example:latest
 ```
 
 ## Kubernetes
@@ -89,7 +89,7 @@ eval $(minikube docker-env)
 Build your Docker image and give it a tag:
 
 ```
-docker build -t mern:v1 .
+docker build -t mern-example:latest .
 ```
 
 Install the Helm chart located in `helm/mern` on to your cluster:
@@ -119,6 +119,98 @@ helm upgrade limping-bee .
 ```
 
 ### On Bluemix Kubernetes
+
+***Build the Docker image***
+
+1. Start the Docker engine on your local computer
+
+2. Log the local Docker client in to IBM Bluemix Container Registry
+
+```
+bx cr login
+```
+
+> This will configure your local Docker client with the right credentials to be able to push images to the Bluemix Container Registry
+
+3. Retrieve the name of the namespace you are going to use to push your Docker images
+
+```
+bx cr namespace-list
+```
+
+> If you don't have a namespace, you can create one with `bx cr namespace-add my_namespace` for example.
+
+4. Build the Docker image of the service
+
+> In the following steps, make sure to replace <namespace> with your namespace name
+
+```
+docker build -t registry.ng.bluemix.net/<namespace>/mern-example:latest .
+```
+
+5. Push the image to the registry
+
+```
+docker push registry.ng.bluemix.net/<namespace>/mern-example:latest
+```
+
+***Create a Kubernetes cluster***
+
+1. Create a Kubernetes cluster in Bluemix
+
+```
+bx cs cluster-create <cluster-name>
+```
+
+> Note that you can also use an existing cluster
+
+2. Wait for you cluster to be deployed. This step can take awhile, you can check the status of your cluster by using:
+
+
+```
+bx cs clusters
+```
+
+
+
+3. Ensure that the cluster workers are ready:
+
+```
+bx cs workers <cluster-name>
+```
+
+***Deploy the Service***
+
+1. Retrieve the cluster configuration
+
+
+```
+bx cs cluster-config <cluster-name>
+```
+
+The output will look like:
+
+```
+Downloading cluster config for mycluster-robert
+OK
+The configuration for mycluster-robert was downloaded successfully. Export environment variables to start using Kubernetes.
+
+export KUBECONFIG=/home/rfdickerson/.bluemix/plugins/container-service/clusters/mycluster-robert/kube-config-hou02-mycluster-robert.yml
+```
+
+2. Copy and paste the `export KUBECONFIG=...` line into your shell.
+
+3. Confirm the configuration worked by retrieving the cluster nodes.
+
+```
+kubectl get nodes
+```
+
+
+
+
+
+
 
 ## Dependencies
 
