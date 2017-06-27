@@ -31,7 +31,6 @@ spec:
       containers:
       - name: mongo
         image: mongo:latest
-        
         # resources:
         #   requests:
         #     cpu: 100m

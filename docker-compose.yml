@@ -11,7 +11,8 @@ services:
     links:
       - mongo
     environment:
-      MONGO_URL: "mongo/comments"
+      MONGO_URL: "mongo"
+      MONGO_DB_NAME: "comments"
       PORT: "8000"
       NODE_ENV: "development"
   mongo:
