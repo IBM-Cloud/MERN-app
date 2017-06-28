@@ -25,8 +25,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      author: 'Anton Dochtermann',
-      twitter: 'mathgeek',
+      author: 'Thomas J. Watson',
+      twitter: 'blueguy',
       imageURL: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg'
     }
 

@@ -26,7 +26,6 @@ import NavBar from './components/NavBar';
 
 ReactDOM.render(
   <div>
-    <NavBar />
     <Hero />
     <CommentBox 
       url='/api/comments'

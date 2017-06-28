@@ -53,8 +53,8 @@ var sess = {
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
   name: 'mern example',
   secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUnitialized: true,
   cookie: {}
 };
 
@@ -67,7 +67,7 @@ if (process.env.NODE_ENV == 'production') {
   app.use(express.static(staticDir));
 
   app.set('trust proxy', 1); // trust the first proxy
-  sess.cookie.secure = true;
+  // sess.cookie.secure = true;
 
   app.use(morgan('combined'));
 }

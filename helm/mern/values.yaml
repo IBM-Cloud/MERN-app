@@ -3,13 +3,15 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: mern-example
-  tag: latest
+  repository: registry.ng.bluemix.net/robert_namespace/mern-example
+  tag: v1
   pullPolicy: IfNotPresent
 service:
   name: Node
   type: NodePort
   containerPort: 3000
+  env: production
 services:
   mongo:
-     url: mongodb://mongo:27017
+     url: mongo
+     name: comments
