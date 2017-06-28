@@ -22,7 +22,6 @@ import ReactDOM from 'react-dom';
 import CommentBox from './components/CommentBox';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
-import NavBar from './components/NavBar';
 
 ReactDOM.render(
   <div>

@@ -206,11 +206,17 @@ export KUBECONFIG=/home/rfdickerson/.bluemix/plugins/container-service/clusters/
 kubectl get nodes
 ```
 
+4. Install the Helm tiller
 
+```
+helm init
+```
 
+5. Install the Helm chart
 
-
-
+```
+helm install helm/mern
+```
 
 ## Dependencies
 
