@@ -145,13 +145,13 @@ bx cr namespace-list
 > In the following steps, make sure to replace <namespace> with your namespace name
 
 ```
-docker build -t registry.ng.bluemix.net/<namespace>/mern-example:latest .
+docker build -t registry.ng.bluemix.net/<namespace>/mern-example:v1 .
 ```
 
 5. Push the image to the registry
 
 ```
-docker push registry.ng.bluemix.net/<namespace>/mern-example:latest
+docker push registry.ng.bluemix.net/<namespace>/mern-example:v1
 ```
 
 ***Create a Kubernetes cluster***
@@ -170,8 +170,6 @@ bx cs cluster-create <cluster-name>
 ```
 bx cs clusters
 ```
-
-
 
 3. Ensure that the cluster workers are ready:
 
@@ -206,16 +204,57 @@ export KUBECONFIG=/home/rfdickerson/.bluemix/plugins/container-service/clusters/
 kubectl get nodes
 ```
 
-4. Install the Helm tiller
+4. Edit your `helm/mern/Values.yaml` with your namespace
+
+```
+replicaCount: 3
+revisionHistoryLimit: 1
+image:
+  repository: registry.ng.bluemix.net/<namespace>/mern-example
+  tag: v1
+  pullPolicy: IfNotPresent
+service:
+  name: Node
+  type: NodePort
+  containerPort: 3000
+  env: production
+services:
+  mongo:
+     url: mongo
+     name: comments
+```
+
+> replace the namespace with your namespace used when pushing your container. You can change the number of relicaCount too.
+
+5. Install the Helm tiller
 
 ```
 helm init
 ```
 
-5. Install the Helm chart
+6. Install the Helm chart
 
 ```
 helm install helm/mern
+```
+
+7. If you need to upgrade an existing deployment, you can use `helm upgrade`.
+
+Find out your deployment name:
+
+```
+helm ls
+```
+
+```
+NAME         	REVISION	UPDATED                 	STATUS  	CHART     	NAMESPACE
+elegant-puma 	5       	Wed Jun 28 12:01:58 2017	DEPLOYED	mern-0.0.1	default
+```
+
+then to update the deployment, use:
+
+```
+helm upgrade elegant-puma helm/mern
 ```
 
 ## Dependencies
