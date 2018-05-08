@@ -1,266 +1,182 @@
-# MERN stack starter [![Build Status](https://travis-ci.org/rfdickerson/mern-example.svg?branch=master)](https://travis-ci.org/rfdickerson/mern-example)
+# MERN starter
 
-The MERN stack starter demonstrates a working application that uses a React frontend, with a backend build with ExpressJS and MongoDB. It shows how the client can make client HTTP requests and maintain persistant sessions. 
+This starter project provides the base elements needed to create an application using the MERN stack (MongoDB, ExpressJS, a React front end and a Node backend).
 
 ## Getting Started
 
-To run a development environment, you can use the `start-dev` command. This will start up a development web server on port 3000, and a nodemon-watched API server on port 3100. These development servers will automatically reload if changes are made to the source.
+If you have already installed the IBM Cloud Developer Tool (IDT), that's the place to start.  It's an easy one command install; instructions are here:  [IDT Install Instructions](https://github.com/IBM-Cloud/ibm-cloud-developer-tools)
 
-  - Install dependencies with:
+Note IDT build and runs the project using Docker containers.  This is recommended for cloud native development. However, direct use of native tools (e.g. npm) is also supported.  See the 'Using Native Tools' appendix at the end of this read me for further details. 
+
+
+## Dev mode vs release mode 
+
+The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode exclude dev dependencies and runs the app without hot reload. Release mode is intended for running in production. 
+
+## Working in Dev Mode 
+
+1. build project with command: 
 
     ```
-    yarn
+    idt build --debug
+    ```    
+    This installs all dependencies, including dev dependencies. 
+    
+2. run project test cases with command:
     ```
-  
-  - Install [MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+    idt test
+    ```
+	This runs the project's unit tests with mocha. 
+	
+3. run the app in dev mode with command: 
+    ```
+    idt shell run-dev 
+    ```
+	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  The web server and app will automatically reload if changes are made to the source.
+	
+4. run the app in interactive debug mode with command: 
+    ```
+    idt debug
+    ```
+	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests. 
+
+## Working in Release Mode 
+
+1. build project
+	```
+	idt build 
+	``` 
+	Builds project using 'Dockerfile-tools'.  Effectively equivalent to 'idt build --debug'.
+	
+2. run project 
+	```
+	idt run 
+	```
+	Runs project using release image (builds on fly using 'Dockerfile').  Hot reload is not available in the release image. 
+
+## Project default URLs 
+
+Whether you run in dev mode or release mode, you have the same default URLs available to you: 
+
+1. http://localhost:3000
+2. http://localhost:3000/appmetrics-dash
+3. http://localhost:3000/health
+
+## Deployment 
+
+These projects are designed for deployment through the IDT CLI to the IBM Cloud, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).  
+
+To deploy app: 
+```
+idt deploy [--target container]
+```
+
+Deploys app to Cloud Foundry by default or to Kubernetes (on IBM Cloud) if you specify the --target option.  
+
+**NOTE:** If you choose the “IBM DevOps, using Cloud Foundry buildpacks” options when you create your project, there is no need to manually deploy the app to Cloud Foundry.
+
+Deployment to other environments is possible using native commands. See the 'Native Commands Appendix' below for further details. 
+
+## Native Commands Appendix 
+
+This section specifies how to use native commands to do development on this project outside of containers and without the IDT CLI.
+
+Note, when running the project with native commands in either dev or release mode, you must provide your own mongo server. See Mongo section below for details.
+
+### Working in Dev Mode 
+
+1. build project with command: 
+    ```
+    npm install
+    ```    
+    This installs all dependencies, including dev dependencies. 
+    
+2. run project test cases with command:
+    ```
+    npm test
+    ```
+	This runs the project's unit tests with mocha. 
+	
+3. run the app in dev mode with command: 
+    ```
+    npm run dev 
+    ```
+	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  These web server and app will automatically reload if changes are made to the source.
+	
+4. run the app in interactive debug mode with command: 
+    ```
+    npm run debug
+    ```
+	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
+
+### Working in Release Mode 
+
+1. build project
+	```
+	npm install --only=dev; npm run build; npm prune --production 
+	``` 
+	Upon completion, webpack has been run and dev dependencies removed.
+	
+2. run project 
+	```
+	npm start  
+	```
+	  Runs app in release mode. App listens on port 3000. Hot reload is not available in this mode.
    
-  - Start the development environment:
-
-    ```
-    yarn start-dev
-    ```
-
-## Docker Compose
-
-  If you use Docker and Docker Compose, you can start the entire project with:
-
-  ```
-  docker-compose up
-  ```
+**NOTE:** Since this project connects to a running Mongo server, you must provide one when working with native commands.  Install instructions are here: https://docs.mongodb.com/manual/administration/install-community/
  
-## Configuration (Optional)
+### Mongo Configuration
 
-By default, the server will expect to connect to a MongoDB instance running on localhost:27017. However, you can customize the environment to use different values for the MongoDB host. To do that, you can create a `.env` file for specifying credential information for MongoDB. 
+The project's access to Mongo is controlled through these environment variables with their default values shown: 
 
-Create a new file called `.env`, with the following YAML:
+MONGO_URL='localhost:27017';  
+MONGO_USER='';  
+MONGO_PASS='';  
+MONGO_DB_NAME='';  
 
-```yaml
-MONGO_URL=mongodb://localhost:27017/comments
-MONGO_USER=username
-MONGO_PASSWORD=password
-```
+To make configuration changes, edit the "server/routers/mongo.js" file. 
 
-or instead, you can use the equivalent JSON:
+## Other Environment Deployment
 
-```json
-{
-  "mongo": {
-    "url": "mongodb://localhost:27017/comments",
-    "user": "username",
-    "password": "password"
-  }
-}
-```
-
-Where the URL, username, and password are set to your preferences.
-
-## Docker Development run
-
-If you would like to run the development tools inside of a docker container, you can set up a local Docker development environment by building the image:
+You can install and run your app on bare metal or virtual machine environments conventionally: 
 
 ```
-docker build -f Dockerfile-tools -t mern-example:latest .
+1. delete node_modules 
+2. create app archive (e.g. zip up directory)
+3. copy to target machine
+4. unwind (e.g. unzip archive) 
+5. npm install
+6. npm start 
 ```
 
-And running the image:
+You can deploy to Cloud Foundry using: 
+```
+cf push 
+```
+You can deploy to Kubernetes using: 
+```
+1. docker build -p 3000:3000 --name <name> . 
+2. publish image to target registry (e.g. dockerhub)
+2. helm install chart/<project name>
+```
+For Helm deployment, make sure to review variables.yaml in your project's chart to ensure suitable values for your deployment, including your image name and location. 
+
+### Running application
+
+Once you have deployed your application successfully into your Kubernetes cluster. You can test your application by retrieving the IP address of your worker nodes.
+
+1. Run the following command to find out what is the public address of your worker nodes
 
 ```
-docker run -v ${PWD}:/usr/app -p 3000:3100 -t mern-example:latest
+$ bx cs workers <clusterName>
 ```
 
-## Kubernetes
-
-You can use Helm and our bundled chart for quickly deploying your application.
-
-### Locally with minikube
-
-You can use minikube for creating a local testing cluster. Start up your cluster:
+2. To get the port for your particular application run the following command
 
 ```
-minikube start
+$ kubectl get services
 ```
 
-Make sure you set your Docker environment to use it. This is important so that the cluster has your Docker images.
+**Note:** In the column labeled ports you will see two numbers and the protocol (TCP/UDP) The port number on the left is the internal / guest port from the container. The port number on the right is the external port that you will use to access your application.
 
-```
-eval $(minikube docker-env)
-```
-
-Build your Docker image and give it a tag:
-
-```
-docker build -t mern-example:latest .
-```
-
-Install the Helm chart located in `helm/mern` on to your cluster:
-
-```
-helm install helm/mern
-```
-
-If using minikube, you will need to add port forwarding to be able to view your application:
-
-```
-kubectl port-forward <pod_name> <external_port>:3000
-
-kubectl port-forward mern-deployment-789311257-36s62 32111:3000
-```
-
-
-Open your browser to http://localhost:32111
-
-If you want to update your application, you can build a new image with a new version tag, e.x. `docker build -t mern:v2 .`. Update the version tag in `helm/mern/values.yml`.
-
-Then, roll out a new release with:
-
-```
-helm upgrade <deployment_name> helm/mern
-helm upgrade limping-bee .
-```
-
-### On Bluemix Kubernetes
-
-***Build the Docker image***
-
-1. Start the Docker engine on your local computer
-
-2. Log the local Docker client in to IBM Bluemix Container Registry
-
-```
-bx cr login
-```
-
-> This will configure your local Docker client with the right credentials to be able to push images to the Bluemix Container Registry
-
-3. Retrieve the name of the namespace you are going to use to push your Docker images
-
-```
-bx cr namespace-list
-```
-
-> If you don't have a namespace, you can create one with `bx cr namespace-add my_namespace` for example.
-
-4. Build the Docker image of the service
-
-> In the following steps, make sure to replace <namespace> with your namespace name
-
-```
-docker build -t registry.ng.bluemix.net/<namespace>/mern-example:v1 .
-```
-
-5. Push the image to the registry
-
-```
-docker push registry.ng.bluemix.net/<namespace>/mern-example:v1
-```
-
-***Create a Kubernetes cluster***
-
-1. Create a Kubernetes cluster in Bluemix
-
-```
-bx cs cluster-create <cluster-name>
-```
-
-> Note that you can also use an existing cluster
-
-2. Wait for you cluster to be deployed. This step can take awhile, you can check the status of your cluster by using:
-
-
-```
-bx cs clusters
-```
-
-3. Ensure that the cluster workers are ready:
-
-```
-bx cs workers <cluster-name>
-```
-
-***Deploy the Service***
-
-1. Retrieve the cluster configuration
-
-
-```
-bx cs cluster-config <cluster-name>
-```
-
-The output will look like:
-
-```
-Downloading cluster config for mycluster-robert
-OK
-The configuration for mycluster-robert was downloaded successfully. Export environment variables to start using Kubernetes.
-
-export KUBECONFIG=/home/rfdickerson/.bluemix/plugins/container-service/clusters/mycluster-robert/kube-config-hou02-mycluster-robert.yml
-```
-
-2. Copy and paste the `export KUBECONFIG=...` line into your shell.
-
-3. Confirm the configuration worked by retrieving the cluster nodes.
-
-```
-kubectl get nodes
-```
-
-4. Edit your `helm/mern/Values.yaml` with your namespace
-
-```
-replicaCount: 3
-revisionHistoryLimit: 1
-image:
-  repository: registry.ng.bluemix.net/<namespace>/mern-example
-  tag: v1
-  pullPolicy: IfNotPresent
-service:
-  name: Node
-  type: NodePort
-  containerPort: 3000
-  env: production
-services:
-  mongo:
-     url: mongo
-     name: comments
-```
-
-> replace the namespace with your namespace used when pushing your container. You can change the number of relicaCount too.
-
-5. Install the Helm tiller
-
-```
-helm init
-```
-
-6. Install the Helm chart
-
-```
-helm install helm/mern
-```
-
-7. If you need to upgrade an existing deployment, you can use `helm upgrade`.
-
-Find out your deployment name:
-
-```
-helm ls
-```
-
-```
-NAME         	REVISION	UPDATED                 	STATUS  	CHART     	NAMESPACE
-elegant-puma 	5       	Wed Jun 28 12:01:58 2017	DEPLOYED	mern-0.0.1	default
-```
-
-then to update the deployment, use:
-
-```
-helm upgrade elegant-puma helm/mern
-```
-
-## Dependencies
-
-  - [axios](https://github.com/mzabriskie/axios) - promise-based HTTP client
-  - [foreman](https://github.com/strongloop/node-foreman) - a Procfile-based application utility
-  - [mongoose](http://mongoosejs.com/) - mongodb object modelling
-  - [express](https://expressjs.com/) - minimalist Node.js framework
-  - [react](https://facebook.github.io/react/) - JS library for building user interfaces
+3. Once you have your public IP address and port enter that in your browser to view your application.

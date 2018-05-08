@@ -1,17 +1,21 @@
-FROM node:6-alpine
+FROM ibmcom/ibmnode
 
-ADD . /usr/app/
+WORKDIR "/app"
 
-RUN apk update
-COPY package.json /tmp/package.json
-RUN cd /tmp && yarn --quiet
-RUN mkdir -p /usr/app && cp -a /tmp/node_modules /usr/app
+# Install app dependencies
+COPY package.json /app/
+RUN apt-get update \
+ && apt-get dist-upgrade -y \
+ && apt-get clean \
+ && echo 'Finished installing dependencies'
+RUN cd /app; npm install --production
+COPY /src /app/src/
+RUN npm install --only=dev; npm run build; npm prune --production
 
-WORKDIR /usr/app
+COPY . /app
 
-# Build optimized React sources
-RUN yarn run build
+ENV NODE_ENV production
+ENV PORT 3000
 
-ENV NODE_ENV "production"
-
-CMD ["yarn", "start-prod"]
+EXPOSE 3000
+CMD ["npm", "start"]

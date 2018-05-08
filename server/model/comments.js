@@ -28,7 +28,7 @@ var CommentsSchema = new Schema({
   author: String,
   text: String,
   twitter: String,
-  imageURL: String 
+  imageURL: String
 });
 
 module.exports = mongoose.model('Comment', CommentsSchema);

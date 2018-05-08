@@ -1,11 +1,9 @@
 ---
 applications:
-- disk_quota: 1024M
-  name: mern-example
-  random-route: true
-  memory: 128M
+- instances: 1
   timeout: 180
+  name: mernexample
   buildpack: sdk-for-nodejs
-  command: npm run start-prod
-  env:
-    OPENAPI_SPEC: /swagger/api
+  command: npm start
+  memory: 256M
+  domain: mybluemix.net

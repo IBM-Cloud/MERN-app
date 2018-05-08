@@ -2,10 +2,9 @@ version: '2'
 services:
   web:
     build: .
-    command: yarn start-dev
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
+    image: "mernexample-express-run"
+    container_name: "mernexample-express-run"
+    command: npm run start
     ports:
       - "3000:3000"
     links:
@@ -13,7 +12,7 @@ services:
     environment:
       MONGO_URL: "mongo"
       MONGO_DB_NAME: "comments"
-      PORT: "8000"
       NODE_ENV: "development"
+      PORT: 3000
   mongo:
     image: mongo
