@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.mybluemix.net/replace-me-namespace/mernexample
+  repository: registry.ng.bluemix.net/replace-me-namespace/mernexample
   tag: v1.0.0
   pullPolicy: Always
   resources:
@@ -40,3 +40,5 @@ base:
 istio:
   enabled: false
   weight: 100
+generatedBindings:
+  enabled: true
