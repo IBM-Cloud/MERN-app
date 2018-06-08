@@ -1,2 +1,2 @@
-web: react-scripts start
-api: nodemon server/server.js
+web: webpack-dev-server --history-api-fallback --inline --config webpack.dev-proxy.js
+api: npm run server-reload

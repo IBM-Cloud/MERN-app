@@ -3,13 +3,13 @@ FROM ibmcom/ibmnode
 WORKDIR "/app"
 
 # Install app dependencies
-COPY package.json /app/
+COPY package.json webpack.common.js webpack.dev-proxy.js webpack.dev-standalone.js webpack.prod.js /app/
 RUN apt-get update \
  && apt-get dist-upgrade -y \
  && apt-get clean \
  && echo 'Finished installing dependencies'
 RUN cd /app; npm install --production
-COPY /src /app/src/
+COPY /client /app/client/
 RUN npm install --only=dev; npm run build; npm prune --production
 
 COPY . /app

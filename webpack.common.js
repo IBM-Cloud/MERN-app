@@ -38,7 +38,11 @@ module.exports = {
       {
           test    : /\.jsx?$/,
           exclude : /node_modules/,
-          loader  : 'babel-loader'
+          loader  : 'babel-loader',
+		  options: {
+			presets: ['react'],
+			babelrc: false
+		  }
       },
       {
           test    : /\.css?/,

@@ -4,20 +4,18 @@
   "description": "A generated IBM Cloud application",
   "private": true,
   "engines": {
-    "node": "^6.9.0"
+    "node": "^8.11.1"
   },
   "scripts": {
     "start": "node server/server.js",
     "debug": "chmod +x run-debug && ./run-debug",
-    "test": "mocha test --recursive",
+    "test": "nyc mocha",
     "dev": "nf --procfile Procfile-dev --port 3000 start",
-    "build": "react-scripts build",
+    "build": "webpack --progress --config webpack.prod.js",
     "postinstall": "npm run build",
     "lint": "eslint src",
-    "client-reload": "react-scripts start",
-    "server-reload": "nodemon server/server.js",
-    "test-frontend": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "client-reload": "webpack-dev-server --host 0.0.0.0  --history-api-fallback --progress --inline --config webpack.dev-standalone.js",
+    "server-reload": "nodemon server/server.js"
   },
   "nodemonConfig": {
     "env": {
@@ -32,17 +30,12 @@
     "express": "^4.15.3",
     "log4js": "^1.1.1",
     "ibm-cloud-env": "^0",
-    "axios": "^0.16.1",
-    "bulma": "^0.4.1",
     "mongoose": "^4.9.8",
     "connect-mongo": "^1.3.2",
-    "foreman": "^2.0.0",
-    "nodemon": "^1.11.0",
-    "express-session": "^1.15.2",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "express-session": "^1.15.2"
   },
   "devDependencies": {
+    "nodemon": "^1.12.1",
     "chai": "^4.0.0",
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
@@ -62,8 +55,6 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
-    "webpack-merge": "^4.1.1",
-    "react-scripts": "0.9.5"
-  },
-  "proxy": "http://localhost:3100"
+    "webpack-merge": "^4.1.1"
+  }
 }
