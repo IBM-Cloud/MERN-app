@@ -1,9 +1,8 @@
+---
 applications:
-  - instances: 1
-    timeout: 180
-    name: mernexample
-    buildpack: sdk-for-nodejs
-    command: 'npm prune --production && NODE_ENV=production npm start'
-    random-route: true
-    env:
-      NPM_CONFIG_PRODUCTION: false
+- instances: 1
+  timeout: 180
+  name: mernexample
+  buildpack: sdk-for-nodejs
+  command: npm start
+  random-route: true
