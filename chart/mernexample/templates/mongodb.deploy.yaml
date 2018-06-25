@@ -29,7 +29,7 @@ spec:
         app: "mongo-selector"
     spec:
       containers:
-      - name: mongo-99eae
+      - name: mongodb-99eae
         image: mongo:latest
         # resources:
         #   requests:
