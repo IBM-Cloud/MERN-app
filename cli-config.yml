@@ -16,7 +16,7 @@ container-path-tools : "/app"
 # The port mappings between the host and the container in the form [host:container]
 container-port-map : "3000:3000"
 # The port mappings between the host and the container for the debug port in the form [host:container]
-container-port-map-debug : "5858:5858"
+container-port-map-debug : "9229:9229"
 
 
 # The list of additional mounts between the host and the run container in the form [host_path:container_path]
@@ -46,7 +46,7 @@ build-cmd-debug : "npm install"
 # The command to run the code in the run container
 run-cmd : ""
 # The command to execute debug of the code in the tools container
-debug-cmd : ""
+debug-cmd : "npm run debug"
 # The command to stop the code
 stop-cmd : "npm stop"
 
