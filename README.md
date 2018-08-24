@@ -17,42 +17,42 @@ The starter project supports the concept of dev mode and release mode.  In dev m
 
 1. build project with command: 
 
-```
-  idt build --debug
-```    
-This installs all dependencies, including dev dependencies. 
+    ```
+    idt build --debug
+    ```    
+    This installs all dependencies, including dev dependencies. 
     
 2. run project test cases with command:
-```
-  idt test
-```
-This runs the project's unit tests with mocha. 
+    ```
+    idt test
+    ```
+	This runs the project's unit tests with mocha. 
 	
 3. run the app in dev mode with command: 
-```
-  idt shell run-dev 
-```
-This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  The web server and app will automatically reload if changes are made to the source.
+    ```
+    idt shell run-dev 
+    ```
+	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  The web server and app will automatically reload if changes are made to the source.
 	
 4. run the app in interactive debug mode with command: 
-```
-  idt debug
-```
-This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests. 
+    ```
+    idt debug
+    ```
+	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests. 
 
 ## Working in Release Mode 
 
 1. build project
-```
-  idt build 
-``` 
-Builds project using 'Dockerfile-tools'.  Effectively equivalent to 'idt build --debug'.
+	```
+	idt build 
+	``` 
+	Builds project using 'Dockerfile-tools'.  Effectively equivalent to 'idt build --debug'.
 	
 2. run project 
-```
-  idt run 
-```
-Runs project using release image (builds on fly using 'Dockerfile').  Hot reload is not available in the release image. 
+	```
+	idt run 
+	```
+	Runs project using release image (builds on fly using 'Dockerfile').  Hot reload is not available in the release image. 
 
 ## Project default URLs 
 
@@ -86,42 +86,42 @@ Note, when running the project with native commands in either dev or release mod
 ### Working in Dev Mode 
 
 1. build project with command: 
-```
-  npm install
-```    
-This installs all dependencies, including dev dependencies. 
+    ```
+    npm install
+    ```    
+    This installs all dependencies, including dev dependencies. 
     
 2. run project test cases with command:
-```
-  npm test
-```
-This runs the project's unit tests with mocha. 
+    ```
+    npm test
+    ```
+	This runs the project's unit tests with mocha. 
 	
 3. run the app in dev mode with command: 
-```
-  npm run dev 
-```
-This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  These web server and app will automatically reload if changes are made to the source.
+    ```
+    npm run dev 
+    ```
+	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  These web server and app will automatically reload if changes are made to the source.
 	
 4. run the app in interactive debug mode with command: 
-```
-  npm run debug
-```
-This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
+    ```
+    npm run debug
+    ```
+	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
 
 ### Working in Release Mode 
 
 1. build project
-```
-  npm install --only=dev; npm run build; npm prune --production 
-``` 
-Upon completion, webpack has been run and dev dependencies removed.
+	```
+	npm install --only=dev; npm run build; npm prune --production 
+	``` 
+	Upon completion, webpack has been run and dev dependencies removed.
 	
 2. run project 
-```
-  npm start  
-```
-  Runs app in release mode. App listens on port 3000. Hot reload is not available in this mode.
+	```
+	npm start  
+	```
+	  Runs app in release mode. App listens on port 3000. Hot reload is not available in this mode.
    
 **NOTE:** Since this project connects to a running Mongo server, you must provide one when working with native commands.  Install instructions are here: https://docs.mongodb.com/manual/administration/install-community/
  
@@ -129,12 +129,10 @@ Upon completion, webpack has been run and dev dependencies removed.
 
 The project's access to Mongo is controlled through these environment variables with their default values shown: 
 
-```js
-  MONGO_URL='localhost:27017';  
-  MONGO_USER='';  
-  MONGO_PASS='';  
-  MONGO_DB_NAME='';  
-```
+MONGO_URL='localhost:27017';  
+MONGO_USER='';  
+MONGO_PASS='';  
+MONGO_DB_NAME='';  
 
 To make configuration changes, edit the "server/routers/mongo.js" file. 
 

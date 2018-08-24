@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.ng.bluemix.net/replace-me-namespace/mernexample
+  repository: registry.not-used.net/replace-me-namespace/mernexample
   tag: v1.0.0
   pullPolicy: Always
   resources:
@@ -14,7 +14,7 @@ livenessProbe:
   initialDelaySeconds: 3000
   periodSeconds: 1000
 service:
-  name: Node
+  name: node
   type: NodePort
   servicePort: 3000
 hpa:
