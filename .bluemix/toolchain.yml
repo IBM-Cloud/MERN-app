@@ -24,16 +24,17 @@ services:
   build:
     service_id: pipeline
     parameters:
-      services: 
+      services:
         - repo
       name: "{{name}}"
       ui-pipeline: true
       configuration:
-        content: 
+        content:
           $text: pipeline.yml
         env:
           REPO: repo
           CF_APP: "{{form.pipeline.parameters.app-name}}"
+          API_KEY: "{{form.pipeline.parameters.api-key}}"
           CF_SPACE: "{{form.pipeline.parameters.dev-space}}"
           CF_ORGANIZATION: "{{form.pipeline.parameters.dev-organization}}"
           REGION_ID: "{{form.pipeline.parameters.dev-region}}"
@@ -46,10 +47,11 @@ services:
 #Deployment
 form:
   pipeline:
-    schema: 
+    schema:
       $ref: deploy.json
     parameters:
       app-name: mernexample
       dev-region: "{{region}}"
+      api-key: "{{api-key}}"
       dev-space: "{{space}}"
       dev-organization: "{{organization}}"

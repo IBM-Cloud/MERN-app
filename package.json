@@ -23,8 +23,8 @@
     }
   },
   "dependencies": {
-    "appmetrics-dash": "^3.3.2",
-    "appmetrics-prometheus": "^0.0.2",
+    "appmetrics-dash": "^4.0.0",
+    "appmetrics-prometheus": "^2.0.0",
     "appmetrics-zipkin": "^1.0.4",
     "body-parser": "^1.17.1",
     "express": "^4.15.3",

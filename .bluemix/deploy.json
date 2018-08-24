@@ -4,6 +4,10 @@
   "longDescription": "The Delivery Pipeline automates continuous deployment.",
   "type": "object",
   "properties": {
+    "api-key": {
+      "description": "IBM Cloud API keys contain permissions that grant access to organizations, spaces, and Kubernetes clusters. You can obtain your API key with 'bx iam api-key-create' or via the console at https://console.bluemix.net/iam/#/apikeys by clicking **Create API key** (Each API key only can be viewed once).",
+      "type": "string"
+    },
     "dev-region": {
       "description": "The IBM Cloud region",
       "type": "string"
@@ -25,6 +29,12 @@
   "form": [{
     "type": "validator",
     "url": "/devops/setup/bm-helper/helper.html"
+  },
+  {
+    "type": "password",
+    "readonly": false,
+    "title": "IBM Cloud API Key",
+    "key": "api-key"
   },
   {
     "type": "text",
