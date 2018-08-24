@@ -4,55 +4,67 @@ This starter project provides the base elements needed to create an application 
 
 ## Getting Started
 
-If you have already installed the IBM Cloud Developer Tool (IDT), that's the place to start.  It's an easy one command install; instructions are here:  [IDT Install Instructions](https://github.com/IBM-Cloud/ibm-cloud-developer-tools)
+Ensure [IBM Cloud Developer Tools](https://github.com/IBM-Cloud/ibm-cloud-developer-tools) is installed. To install, run:
 
-Note IDT build and runs the project using Docker containers.  This is recommended for cloud native development. However, direct use of native tools (e.g. npm) is also supported.  See the 'Using Native Tools' appendix at the end of this read me for further details. 
+```
+curl -sL http://ibm.biz/idt-installer | bash
+```
 
+> *NOTE:* IDT builds and runs the project using Docker containers, the recommended approach for cloud native development. However, direct use of native tools (e.g. npm) is also supported. See the [Native Commands Appendix](#native-commands-appendix) for more information.
 
 ## Dev mode vs release mode 
 
-The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode exclude dev dependencies and runs the app without hot reload. Release mode is intended for running in production. 
+The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode excludes dev dependencies and runs the app without hot reload. Release mode is intended for running in production.
 
 ## Working in Dev Mode 
 
-1. build project with command: 
+1. Build the project with all dependencies, including dev dependencies, with the command:
 
     ```
     idt build --debug
     ```    
-    This installs all dependencies, including dev dependencies. 
-    
-2. run project test cases with command:
+
+    > *NOTE:* Ensure a Docker daemon is running before issuing the above command
+
+2. Run project unit tests with the command:
+
     ```
     idt test
     ```
-	This runs the project's unit tests with mocha. 
-	
-3. run the app in dev mode with command: 
+
+3. Run the app in dev mode with command:
+
     ```
-    idt shell run-dev 
+    idt shell run-dev &
     ```
-	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  The web server and app will automatically reload if changes are made to the source.
-	
-4. run the app in interactive debug mode with command: 
+
+    A web server will runs on port 3000 and the app itself runs on port 3100. The web server and app will automatically reload if changes are made to the source.
+
+4. Run the app in interactive debug mode with command:
+
     ```
     idt debug
     ```
-	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests. 
+
+     The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
 
 ## Working in Release Mode 
 
-1. build project
-	```
-	idt build 
-	``` 
-	Builds project using 'Dockerfile-tools'.  Effectively equivalent to 'idt build --debug'.
-	
-2. run project 
-	```
-	idt run 
-	```
-	Runs project using release image (builds on fly using 'Dockerfile').  Hot reload is not available in the release image. 
+1. Build the project:
+
+    ```
+    idt build
+    ```
+
+    This builds the project using `Dockerfile-tools`. Effectively equivalent to `idt build --debug`.
+
+2. Run the project:
+
+    ```
+    idt run
+    ```
+
+    This runs the project using the release image built on the fly using `Dockerfile`. Hot reload is not available in the release image.
 
 ## Project default URLs 
 
@@ -66,7 +78,8 @@ Whether you run in dev mode or release mode, you have the same default URLs avai
 
 These projects are designed for deployment through the IDT CLI to the IBM Cloud, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).  
 
-To deploy app: 
+To deploy the app:
+
 ```
 idt deploy [--target container]
 ```
@@ -85,58 +98,68 @@ Note, when running the project with native commands in either dev or release mod
 
 ### Working in Dev Mode 
 
-1. build project with command: 
+1. Build the project with all dependencies, including dev dependencies, with the command:
+
     ```
     npm install
-    ```    
-    This installs all dependencies, including dev dependencies. 
-    
-2. run project test cases with command:
+    ```
+
+2. Run the project unit tests with the command:
+
     ```
     npm test
     ```
-	This runs the project's unit tests with mocha. 
-	
-3. run the app in dev mode with command: 
+
+3. Run the app in dev mode with the command:
+
     ```
     npm run dev 
     ```
-	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  These web server and app will automatically reload if changes are made to the source.
-	
-4. run the app in interactive debug mode with command: 
+
+    A development web server runs on port 3000 and the app itself runs on port 3100.  These web server and app will automatically reload if changes are made to the source.
+
+4. Run the app in interactive debug mode with the command:
+
     ```
     npm run debug
     ```
-	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
+
+    The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
 
 ### Working in Release Mode 
 
-1. build project
-	```
-	npm install --only=dev; npm run build; npm prune --production 
-	``` 
-	Upon completion, webpack has been run and dev dependencies removed.
-	
-2. run project 
-	```
-	npm start  
-	```
-	  Runs app in release mode. App listens on port 3000. Hot reload is not available in this mode.
-   
+1. Build the project:
+
+    ```
+    npm install --only=dev; npm run build; npm prune --production
+    ```
+
+    Upon completion, webpack has been run and dev dependencies removed.
+
+2. Run the project:
+
+    ```
+    npm start
+    ```
+
+    Runs app in release mode. App listens on port 3000. Hot reload is not available in this mode.
+
 **NOTE:** Since this project connects to a running Mongo server, you must provide one when working with native commands.  Install instructions are here: https://docs.mongodb.com/manual/administration/install-community/
  
 ### Mongo Configuration
 
-The project's access to Mongo is controlled through these environment variables with their default values shown: 
+The project's access to Mongo is controlled through these environment variables with their default values shown:
 
-MONGO_URL='localhost:27017';  
-MONGO_USER='';  
-MONGO_PASS='';  
-MONGO_DB_NAME='';  
+```
+MONGO_URL='localhost:27017';
+MONGO_USER='';
+MONGO_PASS='';
+MONGO_DB_NAME='';
+```
 
-To make configuration changes, edit the "server/routers/mongo.js" file. 
+To make configuration changes, edit the [server/routers/mongo.js](server/routers/mongo.js) file.
 
-## Other Environment Deployment
+## Other Environment Deployments
 
 You can install and run your app on bare metal or virtual machine environments conventionally: 
 
@@ -153,12 +176,15 @@ You can deploy to Cloud Foundry using:
 ```
 cf push 
 ```
+
 You can deploy to Kubernetes using: 
+
 ```
 1. docker build -p 3000:3000 --name <name> . 
 2. publish image to target registry (e.g. dockerhub)
 2. helm install chart/<project name>
 ```
+
 For Helm deployment, make sure to review variables.yaml in your project's chart to ensure suitable values for your deployment, including your image name and location. 
 
 ### Running application
@@ -289,7 +315,6 @@ README. You can find out how to use secretes in your application by reviewing th
       poolSize: 1,
       reconnectTries: 1
   };
-	
 ```
 
 ## Deploy your application
