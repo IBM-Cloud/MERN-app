@@ -321,10 +321,10 @@ README. You can find out how to use secretes in your application by reviewing th
 
 * Use **bx dev** and follow the instructions
 ```bash
-$ bx dev deploy --target container
+$ bx dev deploy [--target container]
 ```
 
 * Use **idt** and follow the instructions 
 ```bash
-$ idt deploy --target container
+$ idt deploy [--target container]
 ```
