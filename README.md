@@ -7,7 +7,7 @@ By running this code, you'll understand how to:
 * Create an application for monitoring and distributed tracing using App Metrics
 * Deploy an application using the IBM Developer Tools CLI or natively with Kubernetes or Cloud Foundry
 
-![](images/architecture.png)
+![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/architecture.png)
 
 ## Flow
 
@@ -39,7 +39,7 @@ Ensure [IBM Cloud Developer Tools](https://github.com/IBM-Cloud/ibm-cloud-develo
 curl -sL http://ibm.biz/idt-installer | bash
 ```
 
-> *NOTE:* IDT builds and runs the project using Docker containers, the recommended approach for cloud native development. However, direct use of native tools (e.g. npm) is also supported. See the [Appendix](#APPENDIX.md) for more information.
+> *NOTE:* IDT builds and runs the project using Docker containers, the recommended approach for cloud native development. However, direct use of native tools (e.g. npm) is also supported. See the [Appendix](APPENDIX.md) for more information.
 
 ## Dev mode vs release mode
 
@@ -101,26 +101,57 @@ Whether you run in dev mode or release mode, you have the same default URLs avai
 
 1. [http://localhost:3000](http://localhost:3000)
 
+   ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/homepage.png)
+
 2. [http://localhost:3000/appmetrics-dash](http://localhost:3000/appmetrics-dash)
 
-   ![](images/appmetrics.png)
+   ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/appmetrics.png)
 
 3. [http://localhost:3000/health](http://localhost:3000/health)
+
+   ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/health.png)
 
 
 ## Deployment
 
 These projects are designed for deployment through the IDT CLI to the IBM Cloud, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
 
-To deploy the app:
+#### As a Cloud Foundry app
+
+To deploy the app with Cloud Foundry:
 
 ```
-idt deploy [--target container]
+idt deploy
 ```
 
-Deploys app to Cloud Foundry by default or to Kubernetes (on IBM Cloud) if you specify the --target option.
+#### In a Kubernetes Cluster
 
-For deployment to other environments is possible using native commands. See the [Appendix](#APPENDIX.md) for further details.
+To deploy the app with Kubernetes:
+
+```
+idt deploy --target container
+```
+
+An interactive session will begin where you'll be prompted for a new or existing IBM Kubernetes Service cluster name. Once the cluster is validated and the Docker registry confirmed the app will be deployed to a Kubernetes cluster. _The output below has been trimmed for readability._
+
+```
+The IBM cluster name for the deployment of this application will be: stevemar-cluster
+Log in to the IBM Container Registry ...
+Configuring with cluster 'stevemar-cluster' ...
+
+Deployments:
+NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+mernexample-deployment   1         1         1            0           3s
+mongo-deployment         1         1         1            0           3s
+
+Nodes:
+NAME             STATUS    ROLES     AGE       VERSION
+10.177.184.198   Ready     <none>    14m       v1.10.5+IKS
+
+Your application is hosted at http://169.47.252.58:32281/
+```
+
+As mentioned earlier, for deployments on other environments using native commands see [Appendix](APPENDIX.md).
 
 ## Links
 
