@@ -41,11 +41,11 @@ curl -sL http://ibm.biz/idt-installer | bash
 
 > *NOTE:* IDT builds and runs the project using Docker containers, the recommended approach for cloud native development. However, direct use of native tools (e.g. npm) is also supported. See the [Appendix](APPENDIX.md) for more information.
 
-## Dev mode vs release mode
+## Building your MERN app
 
 The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode excludes dev dependencies and runs the app without hot reload. Release mode is intended for running in production.
 
-## Working in Dev Mode 
+#### Working in development mode
 
 1. Build the project with all dependencies, including dev dependencies, with the command:
 
@@ -75,9 +75,9 @@ The starter project supports the concept of dev mode and release mode.  In dev m
     idt debug
     ```
 
-     The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
+    The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
 
-## Working in Release Mode 
+#### Working in release mode
 
 1. Build the project:
 
@@ -111,10 +111,11 @@ Whether you run in dev mode or release mode, you have the same default URLs avai
 
    ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/health.png)
 
+## Deploying your MERN app
 
-## Deployment
+These projects are designed for deployment to IBM Cloud through the IBM Developer Tools CLI, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
 
-These projects are designed for deployment through the IDT CLI to the IBM Cloud, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
+> *NOTE*: As mentioned earlier, for deployments on other environments using native commands see [Appendix](APPENDIX.md).
 
 #### As a Cloud Foundry app
 
@@ -124,7 +125,7 @@ To deploy the app with Cloud Foundry:
 idt deploy
 ```
 
-#### In a Kubernetes Cluster
+#### In a Kubernetes cluster
 
 To deploy the app with Kubernetes:
 
@@ -151,7 +152,73 @@ NAME             STATUS    ROLES     AGE       VERSION
 Your application is hosted at http://169.47.252.58:32281/
 ```
 
-As mentioned earlier, for deployments on other environments using native commands see [Appendix](APPENDIX.md).
+## Setting up MongoDB
+
+Now that we've got a Dockerized version of our app running, before we push it to production we'll need to configure a Mongo database, this is a MERN stack after all!
+
+### Provisioning a MongoDB
+
+*  Create an instance MongoDB by searching **Compose for MongoDB** in the [Catalog](https://console.bluemix.net/catalog/)
+* Once created go to the _Service credentials_ menu and create a new credential.
+* Copy the `uri` to a text file, we'll need to parse the content out.
+* From the `uri` we will need to get the `username`, `password`, and `mongo_url`. The text is in the form of `mongodb://{username}:{password}@{mongo_url}`.
+
+![](https://github.com/IBM/pattern-utils/raw/master/compose-dbs/mongo-creds.png)
+
+> *NOTE*: Alternatively, you may install MongoDB natively, refer to the [install instructions](https://docs.mongodb.com/manual/administration/install-community).
+
+### Configuring MongoDB
+
+Connecting to MongoDB is done in the file [server/routers/mongo.js](server/routers/mongo.js). It is controlled through environment variables. Below is a sample set of credentials.
+
+```bash
+export MONGO_URL='portal-ssl1308-22.bmix-dal-yp-c4627161-a212-45bd-b0bd-62004a6e6f5c.421838044.composedb.com:54951'
+export MONGO_USER='admin'
+export MONGO_PASS='AFLLYADUNVAUKPNO'
+export MONGO_DB_NAME='admin'
+```
+
+If you want to perform a quick test, try using the [`mongo`](https://docs.mongodb.com/manual/reference/program/mongo/) CLI.
+
+```bash
+$ mongo --ssl --sslAllowInvalidCertificates $MONGO_URL -u $MONGO_USER -p $MONGO_PASS --authenticationDatabase $MONGO_DB_NAME
+MongoDB shell version v4.0.1
+connecting to: mongodb://portal-ssl1308-22.bmix-dal-yp-c4627161-a212-45bd-b0bd-62004a6e6f5c.421838044.composedb.com:54951/test
+MongoDB server version: 3.4.10
+mongos>
+```
+
+#### Using Mongo with Cloud Foundry
+
+Navigate to your application, select the _Runtimes_ menu and you'll be given an opportunity to enter environment variables.
+
+#### Using Mongo with Kubernetes
+
+Open `values.yaml` under the charts directory (e.g. `MERN-app/chart/mernexample/`) and update the section below with the appropriate values.
+
+```yaml
+services:
+  mongo:
+     url: {uri}
+     dbName: {dbname}
+     username: {username}
+     password: {password}
+     env: production
+```
+Open `bindings.yaml` under the charts directory to add Mongo references, add these at the end if they are not there already.
+
+```yaml
+  - name: MONGO_URL
+    value: {{ .Values.services.mongo.url }}
+  - name: MONGO_DB_NAME
+    value: {{ .Values.services.mongo.name }}
+  - name: MONGO_USER
+    value: {{ .Values.services.mongo.username }}
+  - name: MONGO_PASS
+    value: {{ .Values.services.mongo.password }}
+  - name: MONGO_CA
+    value: {{ .Values.services.mongo.ca }}
+```
 
 ## Links
 

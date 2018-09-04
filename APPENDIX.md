@@ -69,7 +69,7 @@ You can deploy to Kubernetes using the following steps:
 1. Build the app with Docker:
 
 ```bash
-docker build .
+$ docker build .
 
 Sending build context to Docker daemon  1.438MB
 Step 1/12 : FROM node:8
@@ -89,7 +89,7 @@ docker tag 442120e8d5fd stevemar/sm-local-mernexample
 docker push stevemar/sm-local-mernexample
 ```
 
-1. Update helm charts prior to deployment. Edit `values.yaml` to ensure suitable values for the Docker image name and location, for example:
+4. Update helm charts prior to deployment. Edit `values.yaml` to ensure suitable values for the Docker image name and location, for example:
 
 ```ini
 repository: docker.io/stevemar/sm-local-mernexample
@@ -161,116 +161,9 @@ cf push
 
 You can install and run your app on bare metal or virtual machine environments conventionally:
 
-```
-1. delete node_modules
+1. delete `node_modules`
 2. create app archive (e.g. zip up directory)
 3. copy to target machine
 4. unwind (e.g. unzip archive)
-5. npm install
-6. npm start
-```
-
-## Mongo Configuration
-
-**NOTE:** Since this project connects to a running Mongo server, you must provide one when working with native commands. Install instructions are here: [https://docs.mongodb.com/manual/administration/install-community](https://docs.mongodb.com/manual/administration/install-community)
-
-### Mongo Configuration locally
-
-The project's access to Mongo is controlled through these environment variables with their default values shown:
-
-```javascript
-MONGO_URL='localhost:27017';
-MONGO_USER='';
-MONGO_PASS='';
-MONGO_DB_NAME='';
-```
-
-To make configuration changes, edit the [server/routers/mongo.js](server/routers/mongo.js) file.
-
-## Using Mongo in Cloud Foundry for your application
-
-Once you are comfortable using your Mongo instance in Kubernetes you can import the credentials of Mongo instance provided by Compose in Cloud Foundry. 
-
-If you have created your instance and setup your credentials, skip to [Set your Helm Charts](#set-your-helm-charts), otherwise continue forward.
-
-### Creating a Compose for MongoDB instance
-
-*  Create an instance MongoDB by searching **Compose for MongoDB** in the [Catalog](https://console.stage1.bluemix.net/catalog/)
-
-* Go to your Dashboard and select the Compose for MongoDB instance that you have created
-
-### Retrieve Credentials
-* Go to Credentials and set your credentials.
-   * You can also import your credentials by clicking on `Choose File` and include your service-specific configuration 
-* Copy the `uri` and the `ca_certificate_base64` onto your clipboard.
-
-You will need to seperate the `username` and `password` from the `uri`. The uri in in the form of `https://{username}:{password}@example.net` 
-
-### Set your Helm Charts
-
-### values.yml
-
-* Open up `values.yml` under your charts directory (e.g. `chart/project/`)
-* Set up the values that will be referenced in your mongo environments.
-
-```yaml
-services:
-  mongo:
-     url: {uri}
-     dbName: {dbname} 
-     ca: {ca_certificate_base64}
-     username: {username}
-     password: {password}
-     env: production
-```
-### bindings.yml
-
-* Add the MONGO environment variables references at the end if they are not there already
-
-```yaml
-  - name: MONGO_URL
-    value: {{ .Values.services.mongo.url }}
-  - name: MONGO_DB_NAME
-    value: {{ .Values.services.mongo.name }}
-  - name: MONGO_USER
-    value: {{ .Values.services.mongo.username }}
-  - name: MONGO_PASS
-    value: {{ .Values.services.mongo.password }}
-  - name: MONGO_CA
-    value: {{ .Values.services.mongo.ca }}
-```
-
-### Secrets (Optional)
-
-If you prefer to not expose your credentials in your `deployment.yml` or `values.yml` you can use a base64 encoded string of your credentials. Using secrets is beyond the scope of this 
-README. You can find out how to use secretes in your application by reviewing the links below.
-
-* [Creating a Secret Using kubectl create secret](https://kubernetes.io/docs/concepts/configuration/secret/#creating-your-own-secrets)
-* [Encyrption Config](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
-
-
-## Configure Mongoose (MongoDB Node) Client
-
-* Open  `server/routers/mongo.js`
-* Edit the MONGO environment variables
-
-```js
-  const mongoURL = process.env.MONGO_URL || 'localhost';
-  const mongoUser = process.env.MONGO_USER || '';
-  const mongoPass = process.env.MONGO_PASS || '';
-  const mongoDBName = process.env.MONGO_DB_NAME || 'comments';
-  const mongoCA = [new Buffer(process.env.MONGO_CA || '', 'base64')] 
-```
-
-* Add SSL configurations
-
-```js
-  const options = {
-      useMongoClient: true,
-      ssl: true,
-      sslValidate: true,
-      sslCA: mongoCA,
-      poolSize: 1,
-      reconnectTries: 1
-  };
-```
+5. run `npm install`
+6. run `npm start`
