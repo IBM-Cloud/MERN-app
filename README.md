@@ -33,10 +33,15 @@ By running this code, you'll understand how to:
 
 ## Getting Started
 
-Ensure [IBM Cloud Developer Tools](https://github.com/IBM-Cloud/ibm-cloud-developer-tools) is installed. To install, run:
+Ensure [IBM Cloud Developer Tools](https://github.com/IBM-Cloud/ibm-cloud-developer-tools) is installed. To install on MacOS and Linux, run:
 
 ```
 curl -sL http://ibm.biz/idt-installer | bash
+```
+To install on Windows, run as Admistrator:
+
+```
+Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('http://ibm.biz/idt-win-installer')
 ```
 
 > *NOTE:* IDT builds and runs the project using Docker containers, the recommended approach for cloud native development. However, direct use of native tools (e.g. npm) is also supported. See the [Appendix](APPENDIX.md) for more information.
@@ -50,7 +55,7 @@ The starter project supports the concept of dev mode and release mode.  In dev m
 1. Build the project with all dependencies, including dev dependencies, with the command:
 
     ```
-    idt build --debug
+    ibmcloud dev build --debug
     ```    
 
     > *NOTE:* Ensure a Docker daemon is running before issuing the above command
@@ -58,13 +63,13 @@ The starter project supports the concept of dev mode and release mode.  In dev m
 2. Run project unit tests with the command:
 
     ```
-    idt test
+    ibmcloud dev test
     ```
 
 3. Run the app in dev mode with command:
 
     ```
-    idt shell run-dev &
+    ibmcloud dev shell run-dev &
     ```
 
     A web server will runs on port 3000 and the app itself runs on port 3100. The web server and app will automatically reload if changes are made to the source.
@@ -72,7 +77,7 @@ The starter project supports the concept of dev mode and release mode.  In dev m
 4. Run the app in interactive debug mode with command:
 
     ```
-    idt debug
+    ibmcloud dev debug
     ```
 
     The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
@@ -82,7 +87,7 @@ The starter project supports the concept of dev mode and release mode.  In dev m
 1. Build the project:
 
     ```
-    idt build
+    ibmcloud dev build
     ```
 
     This builds the project using `Dockerfile-tools`. Effectively equivalent to `idt build --debug`.
@@ -90,7 +95,7 @@ The starter project supports the concept of dev mode and release mode.  In dev m
 2. Run the project:
 
     ```
-    idt run
+    ibmcloud dev run
     ```
 
     This runs the project using the release image built on the fly using `Dockerfile`. Hot reload is not available in the release image.
@@ -115,6 +120,12 @@ Whether you run in dev mode or release mode, you have the same default URLs avai
 
 These projects are designed for deployment to IBM Cloud through the IBM Developer Tools CLI, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
 
+Before deploying your MERN app, you will need to [sign in to IBM Cloud via Command Line](https://console.bluemix.net/docs/cli/reference/ibmcloud/bx_cli.html#ibmcloud_login).
+
+```
+ibmcloud login
+```
+
 > *NOTE*: As mentioned earlier, for deployments on other environments using native commands see [Appendix](APPENDIX.md).
 
 #### As a Cloud Foundry app
@@ -122,7 +133,7 @@ These projects are designed for deployment to IBM Cloud through the IBM Develope
 To deploy the app with Cloud Foundry:
 
 ```
-idt deploy
+ibmcloud dev deploy
 ```
 
 #### In a Kubernetes cluster
@@ -130,7 +141,7 @@ idt deploy
 To deploy the app with Kubernetes:
 
 ```
-idt deploy --target container
+ibmcloud dev deploy --target container
 ```
 
 An interactive session will begin where you'll be prompted for a new or existing IBM Kubernetes Service cluster name. Once the cluster is validated and the Docker registry confirmed the app will be deployed to a Kubernetes cluster. _The output below has been trimmed for readability._
