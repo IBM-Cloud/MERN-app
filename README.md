@@ -1,225 +1,248 @@
-# Create and deploy a cloud native web application using the MERN (MongoDB, Express, React, Node.js) stack
+# MERN starter
 
-This repository has code to create a web app that is pre-configured with the MERN stack (MongoDB, Express.js, React, Node.js). We use IBM Cloud services to host our application; the IBM Cloud Developer Tools CLI to run and debug locally; and lastly provide native commands to deploy to Kubernetes or Cloud Foundry.
-
-By running this code, you'll understand how to:
-* Build an application that uses MongoDB, Express.js, React, and Node.js
-* Create an application for monitoring and distributed tracing using App Metrics
-* Deploy an application using the IBM Developer Tools CLI or natively with Kubernetes or Cloud Foundry
-
-![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/architecture.png)
-
-## Flow
-
-1. The user views the React web app with a browser
-2. With both components written in Node.js, the React front-end communicates with the Express back-end via RESTful APIs.
-3. The back-end Express application uses the Mongo database for storing and retrieving data.
-4. Back-end results are communicated back to the the front-end.
-5. Front-end results are rendered in a human readable format to the user.
-
-## Included Components
-
-* [IBM Cloud](https://console.bluemix.net/docs/overview/ibm-cloud.html#overview): Provides a computing platform that includes a catalog of cloud services which can be integrated with PaaS and IaaS to build business applications.
-* [Kubernetes Cluster](https://console.bluemix.net/docs/containers/container_index.html): Create and manage your own cloud infrastructure and use Kubernetes as your container orchestration engine.
-* [MongoDB](https://console.bluemix.net/docs/infrastructure/database-tools/mongodb-topic-description.html#mongodb): Fully featured NoSQL server that is horizontally scalable to meet your enterprise class database service needs.
-* [Express](https://expressjs.com/): Most popular and minimalistic web framework for creating API and Web server.
-* [React](https://facebook.github.io/react/): JavaScript library for building User Interfaces.
-
-## Featured Technologies
-
-* [Node.js](https://nodejs.org/): An open-source JavaScript run-time environment for executing server-side JavaScript code.
-* [Containers](https://www.ibm.com/cloud-computing/bluemix/containers): Virtual software objects that include all the elements that an app needs to run.
-* [Cloud Native](https://github.com/cncf): Cloud-native is an approach to building and running applications that exploits the advantages of the cloud computing delivery model
+This starter project provides the base elements needed to create an application using the MERN stack (MongoDB, ExpressJS, a React front end and a Node backend).
 
 ## Getting Started
 
-Ensure [IBM Cloud Developer Tools](https://github.com/IBM-Cloud/ibm-cloud-developer-tools) is installed. To install on MacOS and Linux, run:
+If you have already installed the IBM Cloud Developer Tool (IDT), that's the place to start.  It's an easy one command install; instructions are here:  [IDT Install Instructions](https://github.com/IBM-Cloud/ibm-cloud-developer-tools)
 
-```
-curl -sL http://ibm.biz/idt-installer | bash
-```
+Note IDT build and runs the project using Docker containers.  This is recommended for cloud native development. However, direct use of native tools (e.g. npm) is also supported.  See the 'Using Native Tools' appendix at the end of this read me for further details. 
 
-To install on Windows, run as Admistrator:
 
- ```
-Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('http://ibm.biz/idt-win-installer')
-```
+## Dev mode vs release mode 
 
-> *NOTE:* IDT builds and runs the project using Docker containers, the recommended approach for cloud native development. However, direct use of native tools (e.g. npm) is also supported. See the [Appendix](APPENDIX.md) for more information.
+The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode exclude dev dependencies and runs the app without hot reload. Release mode is intended for running in production. 
 
-## Building your MERN app
+## Working in Dev Mode 
 
-The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode excludes dev dependencies and runs the app without hot reload. Release mode is intended for running in production.
-
-#### Working in development mode
-
-1. Build the project with all dependencies, including dev dependencies, with the command:
+1. build project with command: 
 
     ```
-    ibmcloud dev build --debug
+    idt build --debug
     ```    
-
-    > *NOTE:* Ensure a Docker daemon is running before issuing the above command
-
-2. Run project unit tests with the command:
-
+    This installs all dependencies, including dev dependencies. 
+    
+2. run project test cases with command:
     ```
-    ibmcloud dev test
+    idt test
     ```
-
-3. Run the app in dev mode with command:
-
+	This runs the project's unit tests with mocha. 
+	
+3. run the app in dev mode with command: 
     ```
-    ibmcloud dev shell run-dev &
+    idt shell run-dev 
     ```
-
-    A web server will runs on port 3000 and the app itself runs on port 3100. The web server and app will automatically reload if changes are made to the source.
-
-4. Run the app in interactive debug mode with command:
-
+	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  The web server and app will automatically reload if changes are made to the source.
+	
+4. run the app in interactive debug mode with command: 
     ```
-    ibmcloud dev debug
+    idt debug
     ```
+	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests. 
 
-    The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
+## Working in Release Mode 
 
-#### Working in release mode
+1. build project
+	```
+	idt build 
+	``` 
+	Builds project using 'Dockerfile-tools'.  Effectively equivalent to 'idt build --debug'.
+	
+2. run project 
+	```
+	idt run 
+	```
+	Runs project using release image (builds on fly using 'Dockerfile').  Hot reload is not available in the release image. 
 
-1. Build the project:
+## Project default URLs 
 
-    ```
-    ibmcloud dev build
-    ```
+Whether you run in dev mode or release mode, you have the same default URLs available to you: 
 
-    This builds the project using `Dockerfile-tools`. Effectively equivalent to `idt build --debug`.
+1. http://localhost:3000
+2. http://localhost:3000/appmetrics-dash
+3. http://localhost:3000/health
 
-2. Run the project:
+## Deployment 
 
-    ```
-    ibmcloud dev run
-    ```
+These projects are designed for deployment through the IDT CLI to the IBM Cloud, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).  
 
-    This runs the project using the release image built on the fly using `Dockerfile`. Hot reload is not available in the release image.
-
-## Default URLs and sample output
-
-Whether you run in dev mode or release mode, you have the same default URLs available to you:
-
-1. [http://localhost:3000](http://localhost:3000)
-
-   ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/homepage.png)
-
-2. [http://localhost:3000/appmetrics-dash](http://localhost:3000/appmetrics-dash)
-
-   ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/appmetrics.png)
-
-3. [http://localhost:3000/health](http://localhost:3000/health)
-
-   ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/health.png)
-
-## Deploying your MERN app
-
-These projects are designed for deployment to IBM Cloud through the IBM Developer Tools CLI, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
-
-Before deploying your MERN app, you will need to [sign in to IBM Cloud via Command Line](https://console.bluemix.net/docs/cli/reference/ibmcloud/bx_cli.html#ibmcloud_login).
-
- ```
-ibmcloud login
+To deploy app: 
+```
+idt deploy [--target container]
 ```
 
-> *NOTE*: As mentioned earlier, for deployments on other environments using native commands see [Appendix](APPENDIX.md).
+Deploys app to Cloud Foundry by default or to Kubernetes (on IBM Cloud) if you specify the --target option.  
 
-#### As a Cloud Foundry app
+**NOTE:** If you choose the “IBM DevOps, using Cloud Foundry buildpacks” options when you create your project, there is no need to manually deploy the app to Cloud Foundry.
 
-To deploy the app with Cloud Foundry:
+Deployment to other environments is possible using native commands. See the 'Native Commands Appendix' below for further details. 
+
+## Native Commands Appendix 
+
+This section specifies how to use native commands to do development on this project outside of containers and without the IDT CLI.
+
+Note, when running the project with native commands in either dev or release mode, you must provide your own mongo server. See Mongo section below for details.
+
+### Working in Dev Mode 
+
+1. build project with command: 
+    ```
+    npm install
+    ```    
+    This installs all dependencies, including dev dependencies. 
+    
+2. run project test cases with command:
+    ```
+    npm test
+    ```
+	This runs the project's unit tests with mocha. 
+	
+3. run the app in dev mode with command: 
+    ```
+    npm run dev 
+    ```
+	This runs the app in dev mode.  A development web server runs on port 3000 and the app itself runs on port 3100.  These web server and app will automatically reload if changes are made to the source.
+	
+4. run the app in interactive debug mode with command: 
+    ```
+    npm run debug
+    ```
+	This runs the app in interactive debug mode.  The app listens on port 5858 for the debug client to attach to it, and on port 3000 for app requests.
+
+### Working in Release Mode 
+
+1. build project
+	```
+	npm install --only=dev; npm run build; npm prune --production 
+	``` 
+	Upon completion, webpack has been run and dev dependencies removed.
+	
+2. run project 
+	```
+	npm start  
+	```
+	  Runs app in release mode. App listens on port 3000. Hot reload is not available in this mode.
+   
+**NOTE:** Since this project connects to a running Mongo server, you must provide one when working with native commands.  Install instructions are here: https://docs.mongodb.com/manual/administration/install-community/
+ 
+### Mongo Configuration
+
+The project's access to Mongo is controlled through these environment variables with their default values shown: 
+
+MONGO_URL='localhost:27017';  
+MONGO_USER='';  
+MONGO_PASS='';  
+MONGO_DB_NAME='';  
+
+To make configuration changes, edit the "server/routers/mongo.js" file. 
+
+## Other Environment Deployment
+
+You can install and run your app on bare metal or virtual machine environments conventionally: 
 
 ```
-ibmcloud dev deploy
+1. delete node_modules 
+2. create app archive (e.g. zip up directory)
+3. copy to target machine
+4. unwind (e.g. unzip archive) 
+5. npm install
+6. npm start 
 ```
 
-#### In a Kubernetes cluster
+You can deploy to Cloud Foundry using: 
+```
+cf push 
+```
+You can deploy to Kubernetes using: 
+```
+1. docker build -p 3000:3000 --name <name> . 
+2. publish image to target registry (e.g. dockerhub)
+2. helm install chart/<project name>
+```
+For Helm deployment, make sure to review variables.yaml in your project's chart to ensure suitable values for your deployment, including your image name and location. 
 
-To deploy the app with Kubernetes:
+### Running application
+
+Once you have deployed your application successfully into your Kubernetes cluster. You can test your application by retrieving the IP address of your worker nodes.
+
+1. Run the following command to find out what is the public address of your worker nodes
 
 ```
-ibmcloud dev deploy --target container
+$ bx cs workers <clusterName>
 ```
 
-An interactive session will begin where you'll be prompted for a new or existing IBM Kubernetes Service cluster name. Once the cluster is validated and the Docker registry confirmed the app will be deployed to a Kubernetes cluster. _The output below has been trimmed for readability._
+2. To get the port for your particular application run the following command
 
 ```
-The IBM cluster name for the deployment of this application will be: stevemar-cluster
-Log in to the IBM Container Registry ...
-Configuring with cluster 'stevemar-cluster' ...
-
-Deployments:
-NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-mernexample-deployment   1         1         1            0           3s
-mongo-deployment         1         1         1            0           3s
-
-Nodes:
-NAME             STATUS    ROLES     AGE       VERSION
-10.177.184.198   Ready     <none>    14m       v1.10.5+IKS
-
-Your application is hosted at http://169.47.252.58:32281/
+$ kubectl get services
 ```
 
-## Setting up MongoDB
+**Note:** In the column labeled ports you will see two numbers and the protocol (TCP/UDP) The port number on the left is the internal / guest port from the container. The port number on the right is the external port that you will use to access your application.
 
-Now that we've got a Dockerized version of our app running, before we push it to production we'll need to configure a managed Mongo database, this is a MERN stack after all!
+3. Once you have your public IP address and port enter that in your browser to view your application.
 
-### Provisioning a MongoDB
+#### Kubernetes 
 
-*  Create a managed instance of MongoDB by searching **Compose for MongoDB** in the [Catalog](https://console.bluemix.net/catalog/)
-* Once created go to the _Service credentials_ menu and create a new credential.
-* Copy the `uri` to a text file, we'll need to parse the content out.
-* From the `uri` we will need to get the `username`, `password`, and `mongo_url`. The text is in the form of `mongodb://{username}:{password}@{mongo_url}`.
+Once you have deployed your application successfully into your Kubernetes cluster. You can test your application by retrieving the IP address of your worker nodes using the Bluemix CLI. Make sure you that you are logged into your cluster.
 
-![](https://github.com/IBM/pattern-utils/raw/master/compose-dbs/mongo-creds.png)
+1. To get the port for your particular application run the following command
 
-> *NOTE*: Alternatively, you may install MongoDB natively, refer to the [install instructions](https://docs.mongodb.com/manual/administration/install-community).
+```
+$ bx cs workers <clusterName>
+``` 
 
-### Configuring MongoDB
-
-Connecting to MongoDB is done in the file [server/routers/mongo.js](server/routers/mongo.js). It is controlled through environment variables. Below is a sample set of credentials.
-
-```bash
-export MONGO_URL='portal-ssl1308-22.bmix-dal-yp-c4627161-a212-45bd-b0bd-62004a6e6f5c.421838044.composedb.com:54951'
-export MONGO_USER='admin'
-export MONGO_PASS='AFLLYADUNVAUKPNO'
-export MONGO_DB_NAME='admin'
+2. To get the port for your particular application run the following command
+```
+$ kubectl get services
 ```
 
-If you want to perform a quick test, try using the [`mongo`](https://docs.mongodb.com/manual/reference/program/mongo/) CLI.
+**Note:** In the column labeled ports you will see two numbers and the protocol (TCP/UDP) The port number on the left is the internal / guest port from the container. The port number on the right is the external port that you will use to access your application.
 
-```bash
-$ mongo --ssl --sslAllowInvalidCertificates $MONGO_URL -u $MONGO_USER -p $MONGO_PASS --authenticationDatabase $MONGO_DB_NAME
-MongoDB shell version v4.0.1
-connecting to: mongodb://portal-ssl1308-22.bmix-dal-yp-c4627161-a212-45bd-b0bd-62004a6e6f5c.421838044.composedb.com:54951/test
-MongoDB server version: 3.4.10
-mongos>
-```
+3. Once you have your public IP address and port enter that in your browser to view your application.
 
-#### Using Mongo with Cloud Foundry
+## Using Mongo in Cloud Foundry for your application
 
-Navigate to your application, select the _Runtimes_ menu and you'll be given an opportunity to enter environment variables.
+Once you are comfortable using your Mongo instance in Kubernetes you can import the credentials of Mongo instance provided by Compose in Cloud Foundry. 
 
-#### Using Mongo with Kubernetes
+If you have created your instance and setup your credentials, skip to [Environments in Helm Charts], otherwise continue forward.
 
-Open `values.yaml` under the charts directory (e.g. `MERN-app/chart/mernexample/`) and update the section below with the appropriate values.
+### Creating an MongoDB Instance 
+
+*  Create an instance MongoDB by searching **compose for MongoDB** in the [Catalog](https://console.stage1.bluemix.net/catalog/)  
+
+* Go to your Dashboard and select the MongoDB instance that you have created
+
+### Retrieve Credentials 
+* Go to Credentials and set your credentials.
+   * You can also import your credentials by clicking on `Choose File` and include your service-specific configuration 
+* Copy the `uri` and the `ca_certificate_base64` onto your clipboard.
+
+You will need to seperate the `username` and `password` from the `uri`. The uri in in the form of `https://{username}:{password}@example.net` 
+
+### Set your Helm Charts     
+
+### values.yml
+
+* Open up `values.yml` under your charts directory (e.g. `chart/project/`)
+* Set up the values that will be referenced in your mongo environments. 
+
 
 ```yaml
 services:
   mongo:
      url: {uri}
-     dbName: {dbname}
+     dbName: {dbname} 
+     ca: {ca_certificate_base64}
      username: {username}
      password: {password}
      env: production
+     
 ```
-Open `bindings.yaml` under the charts directory to add Mongo references, add these at the end if they are not there already.
+### bindings.yml
 
-```yaml
+* Add the MONGO environment variables references at the end if they are not there already
+
+```ymal
   - name: MONGO_URL
     value: {{ .Values.services.mongo.url }}
   - name: MONGO_DB_NAME
@@ -230,17 +253,53 @@ Open `bindings.yaml` under the charts directory to add Mongo references, add the
     value: {{ .Values.services.mongo.password }}
   - name: MONGO_CA
     value: {{ .Values.services.mongo.ca }}
+
 ```
 
-## Links
+### Secrets (Optional)
 
-* [Node Programming Guide](https://console.bluemix.net/docs/node/index.html#getting-started-tutorial): Tutorial on Node.js app development.
-* [Add a Service to Your App](https://console.bluemix.net/docs/apps/reqnsi.html#add_service): Learn how to add a resource to your cloud native app.
+If you prefer to not expose your credentials in your `deployment.yml` or `values.yml` you can use a base64 encoded string of your credentials. Using secrets is beyond the scope of this 
+README. You can find out how to use secretes in your application by reviewing the links below.
 
-## Learn More
+* [Creating a Secret Using kubectl create secret](https://kubernetes.io/docs/concepts/configuration/secret/#creating-your-own-secrets)
+* [Encyrption Config](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
 
-* [Other Starter Kits](https://console.bluemix.net/developer/appservice/starter-kits/): Enjoyed this Starter Kit? Check out our other Starter Kits.
-* [Architecture Center](https://www.ibm.com/cloud/garage/architectures): Explore Architectures that provide flexible infrastructure solutions.
 
-## License
-[Apache 2.0](LICENSE)
+## Configure Mongoose (MongoDB Node) Client
+
+* Open  `server/routers/mongo.js`
+* Edit the MONGO environment variables
+
+```js
+  const mongoURL = process.env.MONGO_URL || 'localhost';
+  const mongoUser = process.env.MONGO_USER || '';
+  const mongoPass = process.env.MONGO_PASS || '';
+  const mongoDBName = process.env.MONGO_DB_NAME || 'comments';
+  const mongoCA = [new Buffer(process.env.MONGO_CA || '', 'base64')] 
+```
+
+* Add SSL configurations
+
+```js
+  const options = {
+      useMongoClient: true,
+      ssl: true,
+      sslValidate: true,
+      sslCA: mongoCA,
+      poolSize: 1,
+      reconnectTries: 1
+  };
+	
+```
+
+## Deploy your application
+
+* Use **bx dev** and follow the instructions
+```bash
+$ bx dev deploy --target container
+```
+
+* Use **idt** and follow the instructions 
+```bash
+$ idt deploy --target container
+```

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "mongo"
+  name: "{{  .Chart.Name }}-mongo-service"
 spec:
   # if your cluster supports it, uncomment the following to automatically create
   # an external load-balanced IP for the frontend service.
@@ -11,14 +11,13 @@ spec:
   # the port that this service should serve on
   - name: http
     port: 27017
-
   selector:
     app: "mongo-selector"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "mongo-deployment"
+  name: "{{  .Chart.Name }}-mongo-deployment"
 spec:
   # this replicas value is default
   # modify it according to your case
@@ -27,9 +26,10 @@ spec:
     metadata:
       labels:
         app: "mongo-selector"
+        service: mongo
     spec:
       containers:
-      - name: mongodb-99eae
+      - name: {{  .Chart.Name }}-mongo-container
         image: mongo:latest
         # resources:
         #   requests:

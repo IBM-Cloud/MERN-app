@@ -39,14 +39,6 @@ module.exports = function(app){
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json());
 
-	const options = {
-		useMongoClient: true,
-		ssl: true,
-		sslValidate: false,
-		poolSize: 1,
-		reconnectTries: 1
-	};
-
 	// connect to the MongoDB
 	let mongoConnect = 'mongodb://localhost:27017';
 	if (mongoURL !== '' && mongoUser !== '' && mongoPass != '') {
@@ -56,7 +48,7 @@ module.exports = function(app){
 	}
 
 	mongoose.Promise = global.Promise;
-	mongoose.connect(mongoConnect, options)
+	mongoose.connect(mongoConnect)
   		.catch((err) => {
     		if (err) console.error(err);
   	});
@@ -65,6 +57,7 @@ module.exports = function(app){
 	db.on('error', (error) => {
   		console.error(error);
 	});
+
 
 	var sess = {
 	  store: new MongoStore({ mongooseConnection: mongoose.connection }),
@@ -76,9 +69,6 @@ module.exports = function(app){
 	};
 
 	app.use(session(sess));
-
-	console.info('Connection established with mongodb');
-	console.info(`Connection details: ${mongoConnect}`);
 
 	router.get('/comments', (req, res) => {
     	Comment.find(function (err, comments) {
@@ -142,6 +132,7 @@ module.exports = function(app){
 
   		res.json({ message: 'Successfully logged in' });
 	});
+
 
 	router.post('/comments/logout', (req, res) => {
   		req.session.destroy();
