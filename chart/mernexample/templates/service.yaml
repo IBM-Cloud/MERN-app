@@ -3,13 +3,13 @@ kind: Service
 metadata:
   annotations:
     prometheus.io/scrape: 'true'
-  name: "{{  .Chart.Name }}-service"
+  name: "{{  .Chart.Name }}-application-service"
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - name: http  
+  - name: http
     port: {{ .Values.service.servicePort }}
   selector:
     app: "{{  .Chart.Name }}-selector"

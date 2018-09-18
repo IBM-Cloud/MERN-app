@@ -8,7 +8,6 @@ server/localdev-config.json
 
 # testing
 /coverage
-.nyc_output/
 
 # production
 /build
@@ -19,13 +18,6 @@ server/localdev-config.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# idt
-.ibm-project
-
-# post npm install
-public/
-
 server/localdev-config.json
 vcap-local.js
 credentials.json
