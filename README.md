@@ -11,7 +11,7 @@ By running this code, you'll understand how to:
 
 ## Flow
 
-1. The user views the React web app with a browser
+1. The user views the React web app with a browser.
 2. With both components written in Node.js, the React front-end communicates with the Express back-end via RESTful APIs.
 3. The back-end Express application uses the Mongo database for storing and retrieving data.
 4. Back-end results are communicated back to the the front-end.
