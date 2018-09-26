@@ -9,7 +9,7 @@ RUN apt-get update \
  && apt-get clean \
  && echo 'Finished installing dependencies'
 
-# Install npm production packages 
+# Install npm production packages
 COPY package.json webpack.common.js webpack.dev-proxy.js webpack.dev-standalone.js webpack.prod.js /app/
 RUN cd /app; npm install --production
 COPY /client /app/client/
