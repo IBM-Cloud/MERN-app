@@ -41,7 +41,7 @@ module.exports = function(app){
 
 	const options = {
 		useMongoClient: true,
-		ssl: true,
+		ssl: false,
 		sslValidate: false,
 		poolSize: 1,
 		reconnectTries: 1
