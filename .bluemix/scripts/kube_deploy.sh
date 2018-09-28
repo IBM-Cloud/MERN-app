@@ -22,6 +22,10 @@ fi
 echo "Configuring Tiller (Helm's server component)"
 helm init --upgrade
 kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system
+while [ "$(helm version | grep "Tiller")" != "" ]; do
+  echo "Waiting for server..."
+  sleep 10
+done
 helm version
 
 echo "CHART_NAME: $CHART_NAME"
