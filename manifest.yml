@@ -8,5 +8,5 @@ applications:
     name: mernexample
     buildpack: sdk-for-nodejs
     memory: 256M
-    domain: not-used.net
-    host: not-used
+    routes:
+      - route: not-used.not-used.net
