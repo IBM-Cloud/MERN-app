@@ -1,6 +1,6 @@
 # Native Commands Appendix
 
-This section specifies how to use native commands to do development on this project outside of containers and without the IDT CLI.
+This section specifies how to use native commands to do development on this project outside of containers and without the [IBM Cloud Developer Tools](https://github.com/IBM-Cloud/ibm-cloud-developer-tools) CLI.
 
 Note, when running the project with native commands in either dev or release mode, you must provide your own mongo server. See Mongo section below for details.
 

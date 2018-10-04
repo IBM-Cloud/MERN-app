@@ -10,7 +10,6 @@ services:
     ports:
       - "3000:3000"
       - "5858:5858"
-      - "27017:27017"
     volumes:
       - .:/app
       - ./node_modules_linux:/app/node_modules
@@ -20,6 +19,8 @@ services:
       MONGO_URL: "mongo"
       MONGO_DB_NAME: "comments"
       NODE_ENV: "development"
-      PORT: 3100
+      PORT: 3000
   mongo:
     image: mongo
+    ports:
+      - "27017:27017"
