@@ -5,16 +5,16 @@ This repository has code to create a web app that is pre-configured with the MER
 By running this code, you'll understand how to:
 * Build an application that uses MongoDB, Express.js, React, and Node.js
 * Create an application for monitoring and distributed tracing using App Metrics
-* Deploy an application using the IBM Developer Tools CLI or natively with Kubernetes or Cloud Foundry
+* Deploy an application using the IBM Cloud Developer Tools CLI or natively with Kubernetes or Cloud Foundry
 
 ![](https://github.com/IBM/pattern-utils/raw/master/mern-starter/architecture.png)
 
 ## Flow
 
 1. The user views the React web app with a browser.
-2. With both components written in Node.js, the React front-end communicates with the Express back-end via RESTful APIs.
+2. With both components written in Node.js, the React front end communicates with the Express back end via RESTful APIs.
 3. The back-end Express application uses the Mongo database for storing and retrieving data.
-4. Back-end results are communicated back to the the front-end.
+4. Back-end results are communicated back to the the front end.
 5. Front-end results are rendered in a human readable format to the user.
 
 ## Included Components
@@ -23,13 +23,13 @@ By running this code, you'll understand how to:
 * [Kubernetes Cluster](https://console.bluemix.net/docs/containers/container_index.html): Create and manage your own cloud infrastructure and use Kubernetes as your container orchestration engine.
 * [MongoDB](https://console.bluemix.net/docs/infrastructure/database-tools/mongodb-topic-description.html#mongodb): Fully featured NoSQL server that is horizontally scalable to meet your enterprise class database service needs.
 * [Express](https://expressjs.com/): Most popular and minimalistic web framework for creating API and Web server.
-* [React](https://facebook.github.io/react/): JavaScript library for building User Interfaces.
+* [React](https://facebook.github.io/react/): JavaScript library for building user interfaces.
 
 ## Featured Technologies
 
 * [Node.js](https://nodejs.org/): An open-source JavaScript run-time environment for executing server-side JavaScript code.
 * [Containers](https://www.ibm.com/cloud-computing/bluemix/containers): Virtual software objects that include all the elements that an app needs to run.
-* [Cloud Native](https://github.com/cncf): Cloud-native is an approach to building and running applications that exploits the advantages of the cloud computing delivery model
+* [Cloud native](https://github.com/cncf): Cloud native is an approach to building and running applications that exploits the advantages of the cloud computing delivery model
 
 ## Getting Started
 
@@ -49,7 +49,7 @@ Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('
 
 ## Building your MERN app
 
-The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the frontend and backend aspects of the app.  Dev mode is intended for use during app development. Release mode excludes dev dependencies and runs the app without hot reload. Release mode is intended for running in production.
+The starter project supports the concept of dev mode and release mode.  In dev mode, the starter app runs with dev dependencies installed and hot reload enabled for both the front-end and back-end aspects of the app.  Dev mode is intended for use during app development. Release mode excludes dev dependencies and runs the app without hot reload. Release mode is intended for running in production.
 
 #### Working in development mode
 
@@ -119,9 +119,9 @@ Whether you run in dev mode or release mode, you have the same default URLs avai
 
 ## Deploying your MERN app
 
-These projects are designed for deployment to IBM Cloud through the IBM Developer Tools CLI, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
+These projects are designed for deployment to IBM Cloud through the IBM Cloud Developer Tools CLI, to either Kubernetes (public or private cloud) or Cloud Foundry (public cloud only).
 
-Before deploying your MERN app, you will need to [sign in to IBM Cloud via Command Line](https://console.bluemix.net/docs/cli/reference/ibmcloud/bx_cli.html#ibmcloud_login).
+Before deploying your MERN app, you will need to sign in to [IBM Cloud](https://console.bluemix.net/docs/cli/reference/ibmcloud/bx_cli.html#ibmcloud_login) via Command Line.
 
  ```
 ibmcloud login
@@ -131,7 +131,7 @@ ibmcloud login
 
 #### As a Cloud Foundry app
 
-To deploy the app with Cloud Foundry:
+To deploy the app to Cloud Foundry:
 
 ```
 ibmcloud dev deploy
@@ -139,13 +139,13 @@ ibmcloud dev deploy
 
 #### In a Kubernetes cluster
 
-To deploy the app with Kubernetes:
+To deploy the app to Kubernetes:
 
 ```
 ibmcloud dev deploy --target container
 ```
 
-An interactive session will begin where you'll be prompted for a new or existing IBM Kubernetes Service cluster name. Once the cluster is validated and the Docker registry confirmed the app will be deployed to a Kubernetes cluster. _The output below has been trimmed for readability._
+An interactive session will begin where you'll be prompted for a new or existing IBM Cloud Kubernetes Service cluster name. Once the cluster is validated and the Docker registry confirmed the app will be deployed to a Kubernetes cluster. _The output below has been trimmed for readability._
 
 ```
 The IBM cluster name for the deployment of this application will be: stevemar-cluster
@@ -166,18 +166,18 @@ Your application is hosted at http://169.47.252.58:32281/
 
 ## Setting up MongoDB
 
-Now that we've got a Dockerized version of our app running, before we push it to production we'll need to configure a managed Mongo database, this is a MERN stack after all!
+Now that we have a Dockerized version of our app running, before we push it to production we'll need to configure a managed Mongo database, this is a MERN stack after all!
 
-### Provisioning a MongoDB
+### Provisioning an instance of MongoDB
 
-*  Create a managed instance of MongoDB by searching **Compose for MongoDB** in the [Catalog](https://console.bluemix.net/catalog/)
+*  Create a managed instance of MongoDB by searching for **Compose for MongoDB** in the [Catalog](https://console.bluemix.net/catalog/)
 * Once created go to the _Service credentials_ menu and create a new credential.
 * Copy the `uri` to a text file, we'll need to parse the content out.
-* From the `uri` we will need to get the `username`, `password`, and `mongo_url`. The text is in the form of `mongodb://{username}:{password}@{mongo_url}`.
+* From the `uri` we will need to extract the `username`, `password`, and `mongo_url`. The text is in the form of `mongodb://{username}:{password}@{mongo_url}`.
 
 ![](https://github.com/IBM/pattern-utils/raw/master/compose-dbs/mongo-creds.png)
 
-> *NOTE*: Alternatively, you may install MongoDB natively, refer to the [install instructions](https://docs.mongodb.com/manual/administration/install-community).
+> *NOTE*: Alternatively, you may install MongoDB natively. Refer to the [install instructions](https://docs.mongodb.com/manual/administration/install-community).
 
 ### Configuring MongoDB
 
@@ -206,7 +206,7 @@ Navigate to your application, select the _Runtimes_ menu and you'll be given an 
 
 #### Using Mongo with Kubernetes
 
-Open `values.yaml` under the charts directory (e.g. `MERN-app/chart/mernexample/`) and update the section below with the appropriate values.
+Open `values.yaml` under the chart directory (e.g. `MERN-app/chart/mernexample/`) and update the section below with the appropriate values.
 
 ```yaml
 services:
@@ -217,7 +217,7 @@ services:
      password: {password}
      env: production
 ```
-Open `bindings.yaml` under the charts directory to add Mongo references, add these at the end if they are not there already.
+Open `bindings.yaml` under the chart directory to add Mongo references. Add the following entries at the end of the file if they are not there already.
 
 ```yaml
   - name: MONGO_URL
@@ -239,7 +239,7 @@ Open `bindings.yaml` under the charts directory to add Mongo references, add the
 
 ## Learn More
 
-* [Other Starter Kits](https://console.bluemix.net/developer/appservice/starter-kits/): Enjoyed this Starter Kit? Check out our other Starter Kits.
+* [Starter Kits](https://console.bluemix.net/developer/appservice/starter-kits/): Enjoyed this application? Check out our Starter Kits.
 * [Architecture Center](https://www.ibm.com/cloud/garage/architectures): Explore Architectures that provide flexible infrastructure solutions.
 
 ## License
