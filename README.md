@@ -1,6 +1,6 @@
 # Warning: this project as been deprecated
 
-Please refer to [mern-app](https://github.com/IBM/mern-app.
+Please refer to [github.com/IBM/mern-app](https://github.com/IBM/mern-app) instead.
 
 # Create and deploy a cloud native web application using the MERN (MongoDB, Express, React, Node.js) stack
 
